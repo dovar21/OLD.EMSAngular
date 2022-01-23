@@ -1,0 +1,174 @@
+<div class="post">
+    <ng-container *ngIf="!isFullView; else postImage">
+        <a [routerLink]="['/information/news', data.id]" *ngIf="data.imagePath">
+            <ng-container [ngTemplateOutlet]="postImage"></ng-container>
+        </a>
+    </ng-container>
+
+    <ng-template #postImage>
+        <img
+            *ngIf="data.imagePath"
+            src="{{ data.imagePath }}"
+            alt="{{ data.title }}"
+            class="w-100 post__img rounded-top"
+        />
+    </ng-template>
+
+    <mat-card class="mb-4" [@fade]>
+        <mat-card-header>
+            <mat-card-title class="m-0 mb-3">
+                <ng-container *ngIf="!isFullView; else postTitle">
+                    <a
+                        [routerLink]="['/information/news', data.id]"
+                        class="post__title-link"
+                        *ngIf="controllerName === 'News'; else externalLink"
+                    >
+                        <ng-container [ngTemplateOutlet]="postTitle"></ng-container>
+                    </a>
+
+                    <a
+                        href="{{ data.url }}"
+                        target="_blank"
+                        class="post__title-link"
+                        *ngIf="controllerName === 'UsefulLink'"
+                    >
+                        <ng-container [ngTemplateOutlet]="postTitle"></ng-container>
+                    </a>
+
+                    <a
+                        href="{{ data.filePath }}"
+                        download="{{ data.filePath }}"
+                        class="post__title-link"
+                        *ngIf="controllerName === 'File'"
+                    >
+                        <ng-container [ngTemplateOutlet]="postTitle"></ng-container>
+                    </a>
+                </ng-container>
+
+                <ng-template #postTitle>
+                    <h2 class="post__title">
+                        {{ data.title }}
+                        <sup
+                            *ngIf="
+                                (controllerName === 'News' &&
+                                    (permissions['News.Create'] || permissions['News.Update'])) ||
+                                (controllerName === 'UsefulLink' &&
+                                    (permissions['UsefulLinks.Create'] || permissions['UsefulLinks.Edit'])) ||
+                                (controllerName === 'File' &&
+                                    (permissions['Files.Create'] || permissions['UsefulLinks.Edit']))
+                            "
+                        >
+                            <!-- <span
+                                class="badge"
+                                [ngClass]="{ 'badge-success': data.isActive, 'badge-danger': !data.isActive }"
+                            >
+                                {{ data.isActive ? 'Опубликовано' : 'Скрыто' }}
+                            </span> -->
+
+                            <div
+                                class="post__active-badge d-inline-block rounded-circle"
+                                [ngClass]="{
+                                    'post__active-badge_active': data.isActive,
+                                    'post__active-badge_inactive': !data.isActive
+                                }"
+                                matTooltip="{{ data.isActive ? 'Опубликовано' : 'Скрыто' }}"
+                                matTooltipPosition="above"
+                            ></div>
+                        </sup>
+                    </h2>
+
+                    <ng-template #activeBadge></ng-template>
+                </ng-template>
+            </mat-card-title>
+
+            <button
+                *ngIf="controllerName === 'News' && permissions['News.Update']"
+                mat-mini-fab
+                class="mat-fab-basic ml-auto"
+                matTooltip="Редактировать данные"
+                [routerLink]="['/information/news/edit', data.id]"
+                matTooltipPosition="above"
+            >
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+                *ngIf="controllerName === 'UsefulLink' && permissions['UsefulLinks.Edit']"
+                mat-mini-fab
+                class="mat-fab-basic ml-auto"
+                matTooltip="Редактировать данные"
+                (click)="openCreateUpdateDialog()"
+                matTooltipPosition="above"
+            >
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+                *ngIf="controllerName === 'File' && permissions['File.Edit']"
+                mat-mini-fab
+                class="mat-fab-basic ml-auto"
+                matTooltip="Редактировать данные"
+                (click)="openCreateUpdateDialog()"
+                matTooltipPosition="above"
+            >
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <mat-card-subtitle class="mb-0">
+                <div class="post-meta">
+                    <div class="post-meta__item mr-3">
+                        <mat-icon class="mr-1">folder</mat-icon>
+                        {{ data.newsCategoryName || data.usefulLinkCategoryName || data.fileCategoryName }}
+                    </div>
+
+                    <div class="post-meta__item">
+                        <mat-icon class="mr-1">date_range</mat-icon> {{ data.publishAt || data.createdAt }}
+                    </div>
+                </div>
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="mb-4">
+            <ng-container *ngIf="!isFullView; else postFullDescription">
+                <p>{{ data.shortDescription ? data.shortDescription + '...' : data.description }}</p>
+            </ng-container>
+            <ng-template #postFullDescription>
+                <div [innerHtml]="data.description"></div>
+            </ng-template>
+        </mat-card-content>
+
+        <mat-card-actions class="d-flex justify-content-between align-items-center">
+            <mini-profile class="post__mini-profile" [data]="data.author"></mini-profile>
+
+            <button
+                [routerLink]="['/information/news', data.id]"
+                mat-button
+                type="button"
+                class="m-0 post__more-btn mat-button-sm d-none d-sm-block w-auto"
+                *ngIf="controllerName === 'News' && !isFullView"
+            >
+                Подробнее &nbsp; <mat-icon>link</mat-icon>
+            </button>
+
+            <a
+                download="{{ data.filePath }}"
+                href="{{ data.filePath }}"
+                mat-button
+                color="primary"
+                class="m-0 post__more-btn mat-button-sm d-none d-sm-block"
+                *ngIf="controllerName === 'File'"
+            >
+                <mat-icon>cloud_download</mat-icon> Скачать
+            </a>
+
+            <a
+                href="{{ data.url }}"
+                target="_blank"
+                *ngIf="controllerName === 'UsefulLink'"
+                class="d-flex align-self-end"
+            >
+                {{ data.url | getHost }} &nbsp; <mat-icon>link</mat-icon>
+            </a>
+        </mat-card-actions>
+    </mat-card>
+</div>

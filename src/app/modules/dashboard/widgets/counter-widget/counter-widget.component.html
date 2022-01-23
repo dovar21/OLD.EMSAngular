@@ -1,0 +1,25 @@
+<mat-card class="dashboard-widget counter-widget" matRipple matRippleColor="rgba(83, 61, 254, 0.1)">
+    <mat-card-header>
+        <mat-card-title class="text-uppercase font-weight-bold">{{ data.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <span class="count display-4 font-weight-bolder">{{ data.count }}</span>
+
+        <mat-icon
+            class="icon position-absolute"
+            [ngStyle]="{ 'font-size': data.icon.size, right: data.icon.right, bottom: data.icon.bottom }"
+        >
+            {{ data.icon.value }}
+        </mat-icon>
+    </mat-card-content>
+    <mat-card-actions>
+        <a
+            class="more-link p-0 border-0"
+            href="javascript:undefined"
+            [routerLink]="data.link"
+            [queryParams]="data.queryParams ? data.queryParams : ''"
+        >
+            {{ data.buttonLabel }} <mat-icon class="ml-1 mr-0">arrow_forward</mat-icon>
+        </a>
+    </mat-card-actions>
+</mat-card>

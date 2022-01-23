@@ -1,0 +1,35 @@
+<div
+    class="message position-relative py-3 px-4 border-bottom cursor-pointer d-flex"
+    [class.unread]="!message.readDate"
+    [class.active]="isActive"
+    (click)="openMessage.emit(message.id.toString())"
+    matRipple
+>
+    <mini-profile [data]="message.user" [config]="miniProfileConfig"></mini-profile>
+
+    <div class="d-flex flex-column">
+        <h3 class="title mb-1 text-truncate" title="{{ message.title }}">{{ message.title }}</h3>
+        <div class="d-flex align-items-end justify-content-between">
+            <small class="time-info d-flex">
+                <ng-container *ngIf="messageType === 'sent'">
+                    <mat-icon
+                        *ngIf="!message.readDate; else readMark"
+                        [matTooltip]="readStatus"
+                        matTooltipPosition="above"
+                        class="unread-mark mr-1 text-muted"
+                    >
+                        done
+                    </mat-icon>
+
+                    <ng-template #readMark>
+                        <mat-icon [matTooltip]="readStatus" matTooltipPosition="above" class="read-mark mr-1">
+                            done_all
+                        </mat-icon>
+                    </ng-template>
+                </ng-container>
+
+                <span class="text-muted">{{ message.createdAt }}</span>
+            </small>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,420 @@
+@import './sass/_mixins/_media'
+@import './sass/_vars'
+@import './sass/keyframes'
+
+@page
+    size: auto
+    margin: 0mm
+
+::placeholder
+    color: $white
+  
+:-ms-input-placeholder
+    color: $white
+  
+::-ms-input-placeholder
+    color: $white
+
+::selection
+    background-color: transparentize($purple, .3)
+    color: #fff
+
+*
+    outline: none !important
+
+html
+    font-size: 14px
+    scroll-behavior: smooth
+    +respond-to(laptop)
+        font-size: 14px
+
+body,
+mat-card.mat-card,
+input
+    color: $black
+
+body,
+app-entrance
+    min-height: 100vh
+
+body
+    background-color: #F5F7F8
+
+app-root,
+app-entrance
+    order: 0
+    flex: 1 1 auto
+    align-self: auto
+    display: block
+
+input
+    border: none
+
+a, button
+    transition: all .2s ease
+
+a:not(mat-button)
+    color: $purple
+
+    &:hover
+        color: darken($purple, 10%)
+        text-decoration: none
+    
+    &.link
+        border-bottom: 1px dashed $purple
+        display: flex
+        align-items: center
+
+        &:hover
+            border-bottom-color: transparent
+
+        .mat-icon
+            font-size: 18px
+            margin-right: 5px
+
+.row
+    width: auto
+
+.container,
+.container-fluid
+    padding-right: 30px
+    padding-left: 30px
+    +respond-to(tablet)
+        padding-left: 15px
+        padding-right: 15px
+
+.border-bottom
+    border-color: $light-grey
+
+.rounded
+    border-radius: 6px !important
+
+.cursor-pointer
+    cursor: pointer
+
+
+// NgMaterialMultilevelMenu
+ng-material-multilevel-menu
+    .amml-icon, .label[_ngcontent-vup-c16]
+        line-height: 20px !important
+        display: flex
+        align-items: center
+
+    .mat-list
+        &-base
+            padding-top: 0
+
+        &-item-content
+            padding-left: 1.5rem !important
+            padding-right: 1.5rem !important
+    
+    mat-icon
+        font-size: 21px !important
+    
+    .anml-data
+        text-transform: inherit !important
+        height: 20px !important
+    
+    mat-divider
+        display: none !important
+
+    .amml-icon, 
+    .anml-data .label
+        line-height: 20px !important
+        display: flex
+        align-items: center
+    
+    mat-list-item
+        &:hover
+            background-color: lighten($black, 10%) !important
+            color: $light-grey
+            transition: background-color .2s
+    
+    > div > mat-list > ng-list-item > mat-list-item.selected-amml-item
+        background-color: $purple !important
+        color: #fff !important
+
+    .amml-submenu
+        margin-left: 0 !important
+
+        mat-list-item
+            color: $grey !important
+            padding-left: 37px !important
+
+            &:hover,
+            &.active-amml-item
+                background-color: transparent !important
+                color: lighten($purple, 10%) !important
+        
+        &.level
+            &-2 mat-list-item
+                padding-left: 37px !important
+
+            &-3 mat-list-item
+                padding-left: 74px !important
+    
+    .mat-list .mat-list-item-content
+        padding: 0 1.5rem !important
+
+
+// ngx-perfect-scrollbar
+perfect-scrollbar > .ps.ps--scrolling-y > .ps__rail-y, 
+perfect-scrollbar > .ps.ps--scrolling-x > .ps__rail-x,
+.ps .ps__rail-x:hover, 
+.ps .ps__rail-y:hover, 
+.ps .ps__rail-x:focus, 
+.ps .ps__rail-y:focus, 
+.ps .ps__rail-x.ps--clicking, 
+.ps .ps__rail-y.ps--clicking
+    background-color: transparent !important
+
+.ps__rail-y.ps--clicking .ps__thumb-y,
+.ps__thumb-y
+    background-color: transparentize($black, .5) !important
+    width: 6px !important
+
+.ps__rail-y:hover > .ps__thumb-y, 
+.ps__rail-y:focus > .ps__thumb-y
+    background-color: transparentize($black, .3) !important
+
+
+perfect-scrollbar.light > .ps.ps--scrolling-y > .ps__rail-y, 
+perfect-scrollbar.light > .ps.ps--scrolling-x > .ps__rail-x,
+perfect-scrollbar.light .ps .ps__rail-x:hover, 
+perfect-scrollbar.light .ps .ps__rail-y:hover, 
+perfect-scrollbar.light .ps .ps__rail-x:focus, 
+perfect-scrollbar.light .ps .ps__rail-y:focus, 
+perfect-scrollbar.light .ps .ps__rail-x.ps--clicking, 
+perfect-scrollbar.light .ps .ps__rail-y.ps--clicking
+    background-color: transparent !important
+
+perfect-scrollbar.light .ps__rail-y.ps--clicking .ps__thumb-y,
+perfect-scrollbar.light .ps__thumb-y
+    background-color: rgba(255, 255, 255, 0.25) !important
+
+perfect-scrollbar.light .ps__rail-y:hover > .ps__thumb-y, 
+perfect-scrollbar.light .ps__rail-y:focus > .ps__thumb-y
+    background-color: rgba(255, 255, 255, 0.5) !important
+
+mat-sidenav perfect-scrollbar.light .ps-content
+    display: flex
+    flex-direction: column
+    height: 100%
+
+perfect-scrollbar.table-wrapper
+    // max-height: 70vh
+    //max-height: calc(100vh - 263px)
+    +respond-to(tablet)
+        //max-height: calc(100vh - 251px)
+
+
+// MatFab
+button.mat-fab-basic
+    background-color: $white !important
+    box-shadow: none !important
+    color: $grey !important
+    transition: .2s background-color
+
+    &:hover
+        background-color: $white !important
+    
+    &[mat-mini-fab] mat-icon
+        font-size: 18px
+
+    &-secondary
+        background-color: transparent !important
+
+        &:hover
+            background-color: $white !important
+
+
+.progress-spinner
+    z-index: 1
+    left: 0
+    top: 0
+    right: 0
+    bottom: 0
+
+
+// MatPaginator
+.mat-paginator
+    &-range-actions
+        +respond-to('497px', 'max')
+            padding-top: 10px
+    
+    &-page-size-label
+        margin-left: 13px !important
+
+
+// Typography
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6
+    line-height: 1.4
+
+h1, .h1
+    font-size: 2rem
+    +respond-to(laptop)
+        font-size: 1.8rem
+    +respond-to(phone-land)
+        font-size: 1.6rem
+    +respond-to(phone)
+        font-size: 1.4rem
+
+h2, .h2
+    font-size: 1.8rem
+    +respond-to(laptop)
+        font-size: 1.6rem
+    +respond-to(phone-land)
+        font-size: 1.4rem
+    +respond-to(phone)
+        font-size: 1.2rem
+
+.text-muted
+    color: $grey !important
+
+
+// AdministrationEmployee page custom styles. Imported here because need to style
+// Angular Material Tabs component and can't do it from within parent
+// component. Be careful, don't write global styles there.
+@import 'app/modules/administration/administration-employee/administration-employee-view/administration-employee-view-global'
+
+
+// Loading indicator
+mat-progress-bar.mat-progress-bar_top
+    position: absolute
+    left: 0
+    top: 0
+    z-index: 1000
+
+    &.global
+        position: fixed
+        z-index: 10000
+        width: 100vw
+        height: 4px
+
+
+// TODO: Should not use this
+.object-cover
+    object-fit: cover
+
+
+// Custom styled file upload button
+.file-input-button
+    input
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        opacity: 0
+
+
+// MatList
+mat-list-item
+    .value
+        color: $grey
+
+label
+    margin-bottom: 0
+
+
+// Vertical tabs
+.mat-tab-group
+    &:not(.global-tabgroup) .mat-tab-body-content
+        padding-top: 2rem
+    
+    .mat-tab-header,
+    .mat-tab-nav-bar
+        border-color: $white
+
+    &.vertical
+        flex-direction: row
+
+        .mat-tab-header,
+        .mat-tab-nav-bar
+            border-bottom: none
+            border-right: 1px solid $white
+
+            .mat-tab-labels
+                flex-direction: column
+
+                .mat-tab-label
+                    border-radius: 6px 0 0 6px
+                    justify-content: start
+                    transition: background-color .2s
+
+                    &-active
+                        background-color: $white
+            
+            mat-ink-bar
+                display: none
+        
+        .mat-tab-body-wrapper
+            width: 100%
+
+            .mat-tab-body-content
+                padding: 1rem 1rem 1rem 2rem
+
+.lightbox-dialog .mat-dialog-container
+    padding: 0 !important
+    background: transparent !important
+    box-shadow: none !important
+
+
+// CKEditor
+.ck
+    &-content
+        min-height: 300px
+    
+// Right sidebar
+@import 'app/modules/common/components/right-sidebar/right-sidebar-global-styles.sass'
+
+// Bootstrap .badge
+.badge
+    font-weight: 500
+    font-size: 11px
+    padding: 4px 7px 5px
+    line-height: 11px
+
+    &-success
+        background-color: $green
+
+    &-danger
+        background-color: $red
+
+sup, .sup
+    top: -.7em
+
+// Create message component
+@import 'app/modules/mail/send/send.component.global.sass'
+
+.expandable-table
+    .mat
+        &-cell:not(.mat-column-expandedDetail)
+            border: 0
+
+// MatSlideToggle
+.mat-slide-toggle
+    &.narrow
+        .mat-slide-toggle-label
+            justify-content: flex-start
+
+.mat-dialog-container .mat-card
+    box-shadow: none !important
+
+[disabled="true"]
+    cursor: not-allowed
+
+// Dashboard widget
+@import 'app/modules/dashboard/dashboard.component.global.sass'
+
+// Autocomplete with lighter shadow and grey border
+.light-autocomplete.mat-autocomplete-panel:not([class*=mat-elevation-z])
+    margin-top: 4px
+    border: 1px solid #e9ebf4
+    border-radius: 4px
+    box-shadow: 1px 6px 20px 0 rgba(41, 49, 72, 0.08)

@@ -1,0 +1,44 @@
+<mat-sidenav-container>
+    <mat-sidenav mode="side" [opened]="isSidebarOpened" #sidenav class="position-fixed d-print-none">
+        <perfect-scrollbar class="light">
+            <header-mini-profile></header-mini-profile>
+            <notification-widget class="p-4"></notification-widget>
+            <main-navigation></main-navigation>
+
+            <nav class="mt-auto list-unstyled pb-3">
+                <li>
+                    <a
+                        matRipple
+                        [routerLink]="['/help']"
+                        class="nav-link d-flex align-items-center px-4 w-100 border-0"
+                    >
+                        <mat-icon class="mr-3">help</mat-icon> Помощь
+                    </a>
+                </li>
+                <li>
+                    <button
+                        matRipple
+                        (click)="authService.signOut()"
+                        class="nav-link d-flex align-items-center px-4 w-100 border-0"
+                    >
+                        <mat-icon class="mr-3">exit_to_app</mat-icon> Выйти из системы
+                    </button>
+                </li>
+            </nav>
+        </perfect-scrollbar>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="self.isRequesting"
+            class="mat-progress-bar_top global"
+        ></mat-progress-bar>
+
+        <app-header [class.pushed]="isSidebarOpened"></app-header>
+
+        <div [class.faded]="self.isRequesting">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

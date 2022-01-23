@@ -1,0 +1,26 @@
+<div *ngIf="!croppingMode">
+    <img class="w-100 mb-3 rounded" src="{{ imagePreview ? imagePreview : '../../../../assets/img/noavatar.jpg' }}"
+        alt="{{ data.fullName }}" />
+
+    <div class="d-flex justify-content-between w-100">
+        <p class="mr-4 text-white h4 font-weight-bold">{{ data.fullName }}</p>
+
+        <div *ngIf="data.edit">
+            <button *ngIf="isImageReady" (click)="submit()" [disabled]="isRequesting" mat-button class="mat-button mat-button-base mat-button-sm file-input-button mr-3" type="button">
+                Сохранить
+            </button>
+
+            <button mat-button class="mat-button mat-button-base file-input-button mat-button-sm" type="button" [disabled]="isRequesting">
+                <input type="file" accept="image/jpg,image/jpeg" (change)="uploadFile($event.target.files)"
+                    class="cursor-pointer" />
+                Изменить
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="croppingMode && imagePreview">
+    <cropper-image (onSubmitCrop)="onSubmitCrop($event)" [src]="uploadedImage" [isAvatar]="true">
+    </cropper-image>
+</div>

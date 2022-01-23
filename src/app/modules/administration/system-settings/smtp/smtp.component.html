@@ -1,0 +1,31 @@
+<mat-accordion *ngIf="items">
+    <mat-expansion-panel *ngFor="let item of items; let i = index" [expanded]="i === expandedPanelIndex">
+        <mat-expansion-panel-header>
+            <mat-panel-title>{{ item.mailServerName }}</mat-panel-title>
+
+            <mat-panel-description *ngIf="item.isDefault">Используется по умолчанию</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <smtp-config-form
+            [data]="item"
+            [isDefault]="item.isDefault"
+            (onUndoCreate)="items.shift(); expandedPanelIndex = null"
+            (onSubmit)="setDefault($event)"
+            (onDelete)="delete($event)"
+            (onMailServerNameChange)="
+                $event ? (item.mailServerName = $event) : (item.mailServerName = 'Создание конфигурации')
+            "
+        ></smtp-config-form>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<div class="text-center" *ngIf="errorLoadingResults" [@fade]>
+    <h4>Ошибка</h4>
+    <p class="text-muted mb-4">Не удалось загрузить список конфигураций.</p>
+
+    <button mat-flat-button color="primary" (click)="getSettings()">
+        <mat-icon>refresh</mat-icon> Загрузить еще раз
+    </button>
+</div>
+
+<floating-fab title="Добавить конфигурацию" icon="add" (click)="expandCreateForm()"></floating-fab>

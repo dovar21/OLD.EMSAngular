@@ -1,0 +1,19 @@
+<div
+    matRipple
+    matRippleColor="rgba(255, 255, 255, 0.1)"
+    class="mini-profile py-2 px-3 py-lg-3 px-lg-4 d-flex align-items-center justify-content-between"
+>
+    <div class="d-flex align-items-center" routerLink="/me">
+        <img
+            src="{{ user.photo ? user.photo : '../../../../../assets/img/noavatar.jpg' }}"
+            alt="{{ user.name }}"
+            class="avatar rounded-circle mr-2 mr-lg-3"
+        />
+        <div class="media-body">
+            <span class="full-name d-block text-truncate" title="{{ user.name }}">{{ user.name }}</span>
+            <span class="position d-block text-truncate" title="{{ user.position }}">{{ user.position }}</span>
+        </div>
+    </div>
+
+    <sidebar-toggle class="d-lg-none" theme="light"></sidebar-toggle>
+</div>

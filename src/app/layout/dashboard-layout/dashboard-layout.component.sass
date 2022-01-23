@@ -1,0 +1,60 @@
+@import '../../../sass/_mixins/_media'
+@import '../../../sass/_vars'
+
+// MatSideNav
+mat-sidenav
+    width: 270px
+    background-color: $black
+    color: $light-grey
+    +respond-to(tablet)
+        width: 100%
+
+mat-sidenav-content
+    padding-top: 96px
+    padding-bottom: 30px
+    min-height: 100vh
+    overflow: hidden
+    +respond-to(laptop)
+        width: 100%
+    +respond-to(tablet)
+        padding-top: 84px
+    +respond-to(phone-land)
+        padding-top: 75px
+    
+    @media print
+        margin: 0 !important
+
+.nav-link 
+    color: $light-grey
+    background-color: transparent
+    padding-top: .75rem
+    padding-bottom: .75rem
+
+    &:hover
+        background-color: lighten($black, 10%)
+
+
+app-header
+    margin-top: -96px
+    position: fixed
+    z-index: 101
+    right: 0
+    width: 100%
+    transition: transform .4s cubic-bezier(.25,.8,.25,1), width .4s cubic-bezier(.25,.8,.25,1)
+    +respond-to(tablet)
+        margin-top: -84px
+    +respond-to(phone-land)
+        margin-top: -75px
+
+    &.pushed
+        width: calc(100% - 270px)
+        +respond-to(laptop)
+            width: 100%
+            transform: translate3d(270px, 0, 0)
+        
+        @media print
+            transform: none !important
+
+.faded
+    transition: opacity .2s
+    opacity: 1

@@ -1,0 +1,36 @@
+@import '../../../../../sass/vars'
+@import '../../../../../sass/_mixins/media'
+    
+.introduction-card
+    padding-bottom: 60px
+    margin-top: -26px
+    +respond-to(tablet)
+        margin-top: -14px
+    +respond-to(phone-land)
+        padding-top: 20px
+        margin-top: -15px
+
+    .mat-card
+        box-shadow: none !important
+
+    &__avatar
+        width: 100px
+        height: 100px
+
+    &__position
+        color: $grey
+        font-size: 14px
+
+.mat-tab-group
+    margin-top: -48px
+
+.passport-scan
+    height: 250px
+    object-fit: cover
+
+.lock-widget
+    opacity: 0
+    transition: opacity .2s
+
+    &.visible
+        opacity: 1

@@ -1,0 +1,61 @@
+@import '../../../../../sass/vars'
+
+.product-image-view
+    height: 361px
+    overflow: hidden
+
+.avatar
+    width: 100%
+    height: 90.25px
+    transition: border 300ms
+
+    &-full
+        width: 100%
+        height: 100%
+        object-fit: cover
+
+    &__active
+        border-left: 3px solid $purple
+
+    &-full
+        border-radius: 0 6px 6px 0
+
+.full-image-view
+    flex: 12
+
+.buttons
+    top: 20px
+    right: 20px
+
+.arrow-top, .arrow-bottom
+    width: 100%
+    z-index: 33333
+    background: rgba(41, 49, 72, 0.555)
+    color: $white
+    z-index: 333
+    font-size: 2rem
+    cursor: pointer
+    opacity: 0
+    transition: opacity 300ms
+    user-select: none
+
+.arrow-top
+    top: 0
+
+.arrow-bottom
+    bottom: 0
+
+.list-image-view
+    flex: 2
+    border-radius: 6px
+    &:hover .arrow-top
+        opacity: 1
+    &:hover .arrow-bottom
+        opacity: 1
+
+.movingContent
+    transition: all 300ms
+
+.disable
+    opacity: .3 !important
+    cursor: auto

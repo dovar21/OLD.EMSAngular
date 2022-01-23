@@ -1,0 +1,42 @@
+<form [formGroup]="form">
+    <div class="col-12 p-0">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>ФИО</mat-label>
+            <input matInput formControlName="fullName" placeholder="Мирзоев Кодир Шавкатович" type="text" />
+        </mat-form-field>
+    </div>
+
+    <div class="col-12 p-0">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Отдел</mat-label>
+            <mat-select formControlName="departmentId">
+                <mat-option>Все</mat-option>
+                <mat-option *ngFor="let department of departments" value="{{ department.id }}">
+                    {{ department.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12 p-0">
+        <mat-slide-toggle labelPosition="before"
+                          class="mb-3"
+                          color="primary"
+                          checked
+                          formControlName="onlyUsers">
+            Только пользователи
+        </mat-slide-toggle>
+    </div>
+
+    <div class="col-12 p-0">
+        <div class="d-flex justify-content-end">
+            <button mat-flat-button type="button" class="mat-button-secondary mat-button mr-2"
+                (click)="submitFilter(true)">
+                Очистить
+            </button>
+            <button mat-flat-button color="primary" type="submit" (click)="submitFilter()">
+                <mat-icon>search</mat-icon> Найти
+            </button>
+        </div>
+    </div>
+</form>

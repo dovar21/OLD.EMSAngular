@@ -1,0 +1,51 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isRequesting" class="mat-progress-bar_top"></mat-progress-bar>
+
+<h1 mat-dialog-title>Отправить сообщение</h1>
+
+<div mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="submit()" #submitForm="ngForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Заголовок</mat-label>
+            <input matInput placeholder="Заголовок" formControlName="title" />
+
+            <mat-error *ngIf="form.get('title').errors?.required">Заголовок обязателен</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Получатель</mat-label>
+            <input
+                type="text"
+                placeholder="Получатель"
+                matInput
+                formControlName="receiverUserId"
+                [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplayFn">
+                <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                    {{ user.name }}
+                </mat-option>
+            </mat-autocomplete>
+
+            <mat-error *ngIf="form.get('receiverUserId').errors?.notFound">Такого пользователя нет</mat-error>
+        </mat-form-field>
+
+        <ckeditor [editor]="Editor" [config]="editorConfig" (change)="setBody($event)" [disabled]="isRequesting">
+        </ckeditor>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button
+                mat-button
+                type="button"
+                class="mat-button-secondary mr-3"
+                (click)="dialogRef.close()"
+                [disabled]="isRequesting"
+            >
+                Отменить
+            </button>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="isRequesting">
+                <mat-icon>send</mat-icon> Отправить
+            </button>
+        </div>
+    </form>
+</div>

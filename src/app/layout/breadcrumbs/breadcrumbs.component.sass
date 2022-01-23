@@ -1,0 +1,16 @@
+@import '../../../sass/_vars'
+
+.breadcrumb,
+a
+    color: $grey
+
+    &-item
+        &::before,
+        &.active
+            color: lighten($grey, 5%)
+        
+        & + .breadcrumb-item::before
+            content: '›'
+
+a:hover
+    color: $purple

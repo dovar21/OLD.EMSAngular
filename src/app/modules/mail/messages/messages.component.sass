@@ -1,0 +1,43 @@
+@import '../../../../sass/vars'
+@import '../../../../sass/_mixins/media'
+
+.messages
+    min-width: 870px
+    height: calc(100vh - 70px - 60px)
+
+.list
+    min-width: 300px
+    width: 300px
+    overflow: hidden
+    padding-top: 50px
+
+    .filter
+        top: 0
+        z-index: 1
+
+        .mat-icon
+            font-size: 24px
+            left: 15px
+            color: $light-grey
+            transition: color .2s
+
+        .input
+            &::placeholder
+                color: $light-grey
+
+            &:focus + .mat-icon
+                color: $purple
+
+.choose-message,
+.no-results
+    color: transparentize($grey, .3)
+
+    .mat-icon
+        font-size: 6rem
+        color: transparentize($grey, .9)
+
+.full-view
+    padding: 35px
+
+    @media print
+        padding: 20px

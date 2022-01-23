@@ -1,0 +1,127 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Имя провайдера</mat-label>
+                <input
+                    matInput
+                    placeholder="Имя провайдера"
+                    formControlName="mailServerName"
+                    (input)="onMailServerNameChange.emit($event.target.value)"
+                />
+
+                <mat-error *ngIf="form.get('mailServerName').errors?.required">Имя провайдера обязательно</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Сервер</mat-label>
+                <input matInput placeholder="Сервер" formControlName="mailServer" />
+
+                <mat-error *ngIf="form.get('mailServer').errors?.required">Сервер обязателен</mat-error>
+                <mat-error *ngIf="form.get('mailServer').errors?.pattern">Неверный адрес сервера</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-2">
+            <mat-form-field appearance="outline">
+                <mat-label>Порт</mat-label>
+                <input matInput placeholder="Порт" formControlName="mailPort" />
+
+                <mat-error *ngIf="form.get('mailPort').errors?.required">Порт обязателен</mat-error>
+                <mat-error *ngIf="form.get('mailPort').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-2 d-flex align-items-center">
+            <mat-slide-toggle labelPosition="before" class="mb-3" color="primary" formControlName="SSL">
+                SSL
+            </mat-slide-toggle>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Логин</mat-label>
+                <input matInput placeholder="Логин" formControlName="sender" />
+
+                <mat-error *ngIf="form.get('sender').errors?.required">Логин обязателен</mat-error>
+                <mat-error *ngIf="form.get('sender').errors?.duplicateSender">{{ validationErrors[1006] }}</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Пароль</mat-label>
+                <input matInput placeholder="Пароль" formControlName="password" type="password" />
+
+                <mat-error *ngIf="form.get('password').errors?.required">Пароль обязателен</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Имя отправителя</mat-label>
+                <input matInput placeholder="Имя отправителя" formControlName="senderName" />
+
+                <mat-error *ngIf="form.get('senderName').errors?.required">Имя отправителя обязательно</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="pt-4">
+        <div class="row">
+            <div class="col-12 col-sm-4 col-md-4 d-flex align-items-center">
+                <mat-slide-toggle
+                    class="mb-3 mb-sm-0 narrow"
+                    color="primary"
+                    formControlName="isActive"
+                    (change)="bindActiveToDefault($event.checked)"
+                >
+                    Использовать конфигурацию
+                </mat-slide-toggle>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 d-flex align-items-center">
+                <mat-slide-toggle
+                    class="mb-3 mb-sm-0 narrow"
+                    color="primary"
+                    formControlName="isDefault"
+                    (change)="bindDefaultToActive($event.checked)"
+                    [checked]="isDefault"
+                >
+                    Использовать по умолчанию
+                </mat-slide-toggle>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 d-flex align-items-center ml-auto ml-lg-0 justify-content-end">
+                <!-- <button
+                    mat-button
+                    color="warn"
+                    (click)="delete()"
+                    [disabled]="isRequesting"
+                    *ngIf="data.id; else undoCreateBtn"
+                    class="mat-button-secondary mr-3"
+                >
+                    <mat-icon>delete</mat-icon> Удалить
+                </button> -->
+
+                <button
+                    *ngIf="!data.id"
+                    mat-button
+                    (click)="onUndoCreate.emit(true)"
+                    [disabled]="isRequesting"
+                    class="mat-button-secondary mr-3"
+                >
+                    Отмена
+                </button>
+
+                <button mat-flat-button color="primary" [disabled]="isRequesting" type="submit">
+                    <mat-icon>save</mat-icon> Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

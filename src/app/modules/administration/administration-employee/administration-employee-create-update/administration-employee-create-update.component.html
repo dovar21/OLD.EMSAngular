@@ -1,0 +1,210 @@
+<div class="container-fluid p-0">
+    <form class="d-flex justify-content-between flex-column flex-lg-row px-4 px-lg-0 mr-0" [formGroup]="form" #formDirective="ngForm">
+            <mat-card *ngIf="essentialData || departments" [@fade] class="w-100 mx-lg-4 mb-4">
+                <h1 class="mb-4">{{ title }}</h1>
+                <mat-card-header>
+                    <mat-card-title>Главное</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Фамилия</mat-label>
+                                <input matInput placeholder="Расулов" formControlName="lastName" required />
+
+                                <mat-error *ngIf="form.get('lastName').errors?.required">Фамилия обязательна</mat-error>
+                                <mat-error *ngIf="form.get('lastName').errors?.pattern">Только буквы кириллического
+                                    алфавита</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Имя</mat-label>
+                                <input matInput placeholder="Азамат" formControlName="firstName" required />
+                                <mat-error *ngIf="form.get('firstName').errors?.required">Имя обязательно</mat-error>
+                                <mat-error *ngIf="form.get('firstName').errors?.pattern">Только буквы кириллического
+                                    алфавита</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Отчество</mat-label>
+                                <input matInput placeholder="Олимович" formControlName="middleName" />
+                                <mat-error *ngIf="form.get('middleName').errors?.pattern">
+                                    Только буквы кириллического алфавита
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Дата рождения</mat-label>
+                                <input matInput placeholder="15.09.1995" [matDatepicker]="dateOfBirth"
+                                    formControlName="dateOfBirth" required [min]="minDate" [max]="aultDate" />
+                                <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+
+                                <mat-datepicker #dateOfBirth></mat-datepicker>
+                                <mat-error *ngIf="form.get('dateOfBirth').errors?.required">
+                                    Выберите дату
+                                </mat-error>
+                                <mat-error *ngIf="form.get('dateOfBirth').errors?.matDatepickerParse">
+                                    Введите дату в формате ДД.ММ.ГГГГ
+                                </mat-error>
+                                <mat-error *ngIf="form.get('dateOfBirth').errors?.matDatepickerMin">
+                                    Минимальная дата – 01.01.1900
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4 d-flex align-items-center">
+                            <mat-radio-group color="primary" formControlName="genderId" class="mb-4 mx-auto">
+                                <mat-radio-button value="{{ gender.id }}"
+                                    *ngFor="let gender of genders; let last = last" [class.mr-3]="!last">
+                                    {{ gender.name }}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Дата приема на работу</mat-label>
+                                <input matInput placeholder="12.08.2019" [matDatepicker]="hireDate"
+                                    formControlName="hireDate" [max]="today" required />
+                                <mat-datepicker-toggle matSuffix [for]="hireDate"></mat-datepicker-toggle>
+                                <mat-datepicker #hireDate></mat-datepicker>
+
+                                <mat-error *ngIf="form.get('hireDate').errors?.required">
+                                    Выберите дату
+                                </mat-error>
+                                <mat-error *ngIf="form.get('hireDate').errors?.matDatepickerParse">
+                                    Введите дату в формате ДД.ММ.ГГГГ
+                                </mat-error>
+                                <mat-error *ngIf="form.get('hireDate').errors?.matDatepickerMin">
+                                    Минимальная дата – 01.01.1900
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Отдел</mat-label>
+                                <mat-select formControlName="departmentId" required
+                                    (selectionChange)="getPositions(form.get('departmentId').value)">
+                                    <mat-option *ngFor="let department of departments" [value]="department.id">
+                                        {{ department.name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="form.get('departmentId').errors?.required">Выберите отдел</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Должность</mat-label>
+                                <mat-select formControlName="positionId" required>
+                                    <mat-option *ngFor="let position of positions" [value]="position.id">
+                                        {{ position.name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="form.get('positionId').errors?.required">Выберите должность
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Телефон</mat-label>
+                                <input matInput placeholder="934114400" formControlName="phone" minlength="9"
+                                    maxlength="9" required />
+
+                                <mat-error *ngIf="form.get('phone').errors?.required">Номер телефона обязателен
+                                </mat-error>
+                                <mat-error *ngIf="form.get('phone').errors?.minlength">
+                                    Номер не может быть менее
+                                    {{ form.get('phone').errors.minlength.requiredLength }}
+                                    цифр
+                                </mat-error>
+                                <mat-error *ngIf="form.get('phone').errors?.duplicatePhone">
+                                    {{ validationErrors[1003] }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input matInput placeholder="azamat@mail.ru" formControlName="email" />
+
+                                <mat-error *ngIf="form.get('email').errors?.pattern">
+                                    Неверный Email
+                                </mat-error>
+                                <mat-error *ngIf="form.get('email').errors?.duplicateEmail">
+                                    {{ validationErrors[1002] }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-xl-8">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Фактический адрес</mat-label>
+                                <input matInput placeholder="г. Душанбе, ул. Лохути, д. 5, кв. 8"
+                                    formControlName="factualAddress" required />
+
+                                <mat-error *ngIf="form.get('factualAddress').errors?.required">
+                                    Фактический адрес обязателен
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Дополнительное описание</mat-label>
+                                <textarea matInput placeholder="Здесь можно оставить заметку о сотруднике"
+                                    formControlName="description" #description matTextareaAutosize
+                                    matAutosizeMinRows="4" maxlength="256"></textarea>
+                                <mat-hint align="end">{{ description.value.length }} / 256</mat-hint>
+                                <mat-error *ngIf="form.get('description').errors?.maxlength">
+                                    Описание не может содержать более
+                                    {{ form.get('description').errors.maxlength.requiredLength }}
+                                    символов
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <right-sidebar>
+                <div *ngIf="croppingMode && imagePreview">
+                    <cropper-image (onSubmitCrop)="onSubmitCrop($event)" [src]="uploadedImage" [isAvatar]="true">
+                    </cropper-image>
+                </div>
+
+                <div *ngIf="!croppingMode">
+                    <div class="mb-4" *ngIf="essentialData || departments" [@fade]>
+                        <img src="{{ imagePreview ? imagePreview : '../../../../../../assets/img/noavatar.jpg'}}"
+                        alt="Фото сотрудника" class="photo-preview w-100 object-cover mb-3" />
+                        <button mat-button class="file-input-button w-100" type="button" [disabled]="isEmployeeLocked">
+                            <input type="file" accept="image/jpg,image/jpeg"
+                                (change)="uploadFile($event.target.files)" class="cursor-pointer" />
+                            Загрузить фото
+                        </button>
+                    </div>
+
+                    <button *ngIf="essentialData?.photoPath || departments" mat-flat-button color="primary"
+                        class="mb-3 w-100" (click)="submit('profile', formDirective)" [@fade]>
+                        <mat-icon>save</mat-icon> Сохранить
+                    </button>
+
+                    <button *ngIf="!id && (essentialData?.photoPath || departments)" mat-flat-button color="accent"
+                        class="w-100" (click)="submit('create', formDirective)" [@fade]>
+                        <mat-icon>save</mat-icon> Сохранить и добавить еще
+                    </button>
+                </div>
+            </right-sidebar>
+    </form>
+</div>

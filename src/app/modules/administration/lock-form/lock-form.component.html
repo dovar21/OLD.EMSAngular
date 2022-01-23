@@ -1,0 +1,52 @@
+<form
+    *ngIf="!entityLockStatus?.lockDate; else unlockForm"
+    class="lock-form"
+    [formGroup]="form"
+    (ngSubmit)="lock(form.value.lockReason)"
+    #filterForm="ngForm"
+    [ngClass]="{
+        'd-md-flex align-items-sm-baseline horisontal': horisontal
+    }"
+>
+    <mat-form-field appearance="outline" class="w-100" [class.mr-3]="horisontal">
+        <mat-label>Причина</mat-label>
+        <mat-select formControlName="lockReason">
+            <mat-option *ngFor="let lockReason of lockReasons" [value]="lockReason.id">
+                {{ lockReason.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-flat-button color="warn" type="submit" class="btn-lg btn-block" [disabled]="isRequesting">
+        <mat-icon>block</mat-icon> Заблокировать
+    </button>
+</form>
+
+<ng-template #unlockForm>
+    <mat-list role="list" class="p-0 no-mt mb-3">
+        <mat-list-item role="listitem">
+            <span class="key mr-auto">Инициатор</span>
+            <span class="value text-right">{{ entityLockStatus?.lockAuthor }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+            <span class="key mr-auto">Причина</span>
+            <span class="value text-right">{{ entityLockStatus.lockReasonName }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+            <span class="key mr-auto">Дата </span>
+            <span class="value text-right">{{ entityLockStatus.lockDate }}</span>
+        </mat-list-item>
+    </mat-list>
+    <button
+        (click)="unlock()"
+        mat-flat-button
+        color="accent"
+        class="btn-lg btn-block unlock-btn"
+        [style.max-width.px]="entityType === 'user' ? '200' : 'none'"
+        [class.ml-auto]="entityType === 'user'"
+        [disabled]="isRequesting"
+    >
+        Разблокировать
+    </button>
+</ng-template>

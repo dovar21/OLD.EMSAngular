@@ -1,0 +1,77 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isRequesting" class="mat-progress-bar_top"></mat-progress-bar>
+
+<h1 mat-dialog-title>{{ title }}</h1>
+
+<div mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="submit()" #submitForm="ngForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Название</mat-label>
+            <input matInput placeholder="Название" formControlName="title" />
+
+            <mat-error *ngIf="form.get('title').errors?.required">Название обязательно</mat-error>
+            <mat-error *ngIf="form.get('title').errors?.duplicateTitle">{{ validationErrors[1005] }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Категория</mat-label>
+            <mat-select formControlName="fileCategoryId">
+                <ng-container *ngFor="let category of categories">
+                    <mat-option [value]="category.id">
+                        {{ category.name }}
+                    </mat-option>
+                </ng-container>
+            </mat-select>
+
+            <mat-error *ngIf="form.get('fileCategoryId').errors?.required">
+                Выберите категорию
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mb-1">
+            <mat-label>Краткое описание</mat-label>
+            <textarea
+                matInput
+                placeholder="Краткое описание новости"
+                formControlName="description"
+                matTextareaAutosize
+                matAutosizeMinRows="4"
+                maxlength="256"
+                #description
+            ></textarea>
+            <mat-hint align="end">{{ description.value.length }} / 256</mat-hint>
+            <mat-error *ngIf="form.get('description').errors?.required">
+                Описание обязательно
+            </mat-error>
+            <mat-error *ngIf="form.get('description').errors?.maxlength">
+                Описание не может содержать более
+                {{ form.get('description').errors.maxlength.requiredLength }}
+                символов
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-button class="file-input-button w-100 mb-3" type="button" [disabled]="isRequesting">
+            <input type="file" (change)="renderFileInfoAndAssignFile($event.target.files)" />
+            {{ fileSelectText.length > 30 ? (fileSelectText | slice: 0:30) + '...' : fileSelectText }}
+        </button>
+
+        <mat-slide-toggle labelPosition="before" formControlName="isActive" color="primary" class="mb-3"
+            >Активнa
+        </mat-slide-toggle>
+
+        <div class="d-flex">
+            <button
+                mat-button
+                type="button"
+                class="w-100 mr-3 mat-button-secondary"
+                (click)="dialogRef.close()"
+                [disabled]="isRequesting"
+            >
+                Отменить
+            </button>
+
+            <button mat-flat-button class="w-100" color="primary" type="submit" [disabled]="isRequesting">
+                <mat-icon>save</mat-icon>Сохранить
+            </button>
+        </div>
+    </form>
+</div>

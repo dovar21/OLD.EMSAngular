@@ -1,0 +1,29 @@
+@import '../../../sass/_mixins/_media'
+@import '../../../sass/_vars'
+
+
+.mini-profile
+    background-color: lighten($black, 5%)
+    height: 69px
+    color: $light-grey
+    cursor: pointer
+    +respond-to(phone-land)
+        height: 59px
+
+    .avatar
+        object-fit: cover
+        width: 40px
+        height: 40px
+    
+    .full-name
+        margin-bottom: -2px
+    
+    .position
+        font-size: .875rem
+        color: transparentize($light-grey, .5)
+    
+    .full-name,
+    .position
+        max-width: 160px
+        +respond-to(tablet)
+            max-width: 100%

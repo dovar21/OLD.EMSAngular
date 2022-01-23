@@ -1,0 +1,47 @@
+<mat-card class="introduction-card rounded-0 d-flex align-items-center justify-content-between"
+          *ngIf="product"
+          [@fade]>
+    <form [formGroup]="groupForm"
+          class="d-flex flex-column flex-md-row align-items-center m-auto m-md-0">
+        <div class="text-center text-md-left">
+            <h1 class="introduction-card__name mb-1">
+                <input matInput
+                       formControlName="title"
+                       [placeholder]="product.title"/>
+            </h1>
+            <span class="introduction-card__short-description">
+                <input matInput
+                       formControlName="shortDescription"
+                       [placeholder]="product.shortDescription ? product.shortDescription : 'Введите короткое описание'"/>
+            </span>
+        </div>
+    </form>
+</mat-card>
+<div class="container-fluid" *ngIf="product" [@fade]>
+    <mat-tab-group dynamicHeight
+                   animationDuration="0ms"
+                   [selectedIndex]="activeTabIndex"
+                   (selectedTabChange)="catchTabChange($event)"
+                   class="global-tabgroup">
+        <div *ngIf="product" class="container-fluid">
+            <mat-tab label="Основные данные" matRipple matRippleColor="#533dfe">
+                <products-properties-tab [product]="product"
+                                         [groupForm]="groupForm"
+                                         [payload]="payload">
+                </products-properties-tab>
+            </mat-tab>
+            <mat-tab label="Остатки">
+                <products-residue-tab [productId]="product.id"></products-residue-tab>
+            </mat-tab>
+            <mat-tab label="Аналоги">
+                <products-analog-tab [productId]="product.id"></products-analog-tab>
+            </mat-tab>
+            <mat-tab label="Акции">
+                <products-promos-tab [productId]="product.id"></products-promos-tab>
+            </mat-tab>
+            <mat-tab label="Заинтересованные лица">
+                <products-interested-employees-tab [productId]="product.id"></products-interested-employees-tab>
+            </mat-tab>
+        </div>
+    </mat-tab-group>
+</div>

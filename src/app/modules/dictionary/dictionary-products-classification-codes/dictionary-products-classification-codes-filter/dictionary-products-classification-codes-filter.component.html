@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+    <div class="col-12 p-0">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Название</mat-label>
+            <input matInput formControlName="name" placeholder="Название" type="text" />
+        </mat-form-field>
+    </div>
+
+    <div class="col-12 p-0">
+        <mat-slide-toggle labelPosition="before" class="mb-3" color="primary" checked formControlName="onlyActive">
+            Только активные
+        </mat-slide-toggle>
+    </div>
+
+    <div class="col-12 p-0">
+        <div class="d-flex justify-content-end">
+            <button mat-flat-button type="button" class="mat-button-secondary mat-button mr-2"
+                (click)="submitFilter(true)">
+                Очистить
+            </button>
+            <button mat-flat-button color="primary" type="submit" (click)="submitFilter()">
+                <mat-icon>search</mat-icon> Найти
+            </button>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,49 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isRequesting" class="mat-progress-bar_top"></mat-progress-bar>
+<h1 class="text-center" mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+    <div *ngIf="croppingMode && preview">
+        <cropper-image (onSubmitCrop)="onSubmitCrop($event)"
+                       [src]="preview"
+                       [isAvatar]="true">
+        </cropper-image>
+    </div>
+
+    <div *ngIf="!croppingMode">
+        <form [formGroup]="form"
+              (ngSubmit)="submit()">
+            <div class="mb-4">
+                <img [src]="productImage && productImage.image ? productImage.image : '../../../../../../assets/img/noavatar.jpg'"
+                     alt="Фото сотрудника"
+                     class="photo-preview w-100 object-cover mb-3" />
+
+                <button *ngIf="productImage" mat-button class="file-input-button w-100" type="button">
+                    <input type="file" accept="image/jpg,image/jpeg"
+                           (change)="uploadFile($event.target)"
+                           class="cursor-pointer" />
+                    Загрузить фото
+                </button>
+            </div>
+            <mat-slide-toggle labelPosition="before" formControlName="isPrimary" color="primary" class="mb-3">
+                Основное фото
+            </mat-slide-toggle>
+            <mat-slide-toggle labelPosition="before" formControlName="isVisibleOnSite" color="primary" class="mb-3">
+                Отображать на сайте
+            </mat-slide-toggle>
+            <div class="d-flex justify-content-end mt-4">
+                <button mat-button
+                        type="button"
+                        class="mat-button-secondary mr-3"
+                        (click)="dialogRef.close()"
+                        [disabled]="isRequesting">
+                    Отменить
+                </button>
+                <button mat-flat-button
+                        color="primary"
+                        type="submit"
+                        [disabled]="isRequesting || !productImage.image">
+                    <mat-icon>cloud_upload</mat-icon> Загрузить
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

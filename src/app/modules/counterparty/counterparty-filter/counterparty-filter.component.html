@@ -1,0 +1,55 @@
+<mat-nav-list class="p-0">
+    <form [formGroup]="form">
+        <h4 class="mt-0 mb-3">Поиск контрагентов</h4>
+        <div class="form-row">
+            <div class="col-sm-6 col-12">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Имя</mat-label>
+                    <input matInput formControlName="name" placeholder="Имя" type="text" />
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 col-12">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Страна</mat-label>
+                    <mat-select formControlName="countryId">
+                        <mat-option>Все</mat-option>
+                        <mat-option *ngFor="let country of countries" value="{{ country.id }}">
+                            {{ country.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-6 col-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Тип</mat-label>
+                    <mat-select [(value)]="selectTypes" placeholder="Тип" multiple>
+                        <mat-option value="Поставщик">Поставщик</mat-option>
+                        <mat-option value="Покупатель">Покупатель</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 col-12">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>ИНН</mat-label>
+                    <input matInput formControlName="itn" placeholder="ИНН" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button mat-flat-button type="button" class="mat-button-secondary mat-button mr-2"
+                (click)="submitFilter(true)">
+                Очистить
+            </button>
+            <button mat-flat-button color="primary" type="submit" (click)="submitFilter()">
+                <mat-icon>search</mat-icon> Найти
+            </button>
+        </div>
+
+    </form>
+</mat-nav-list>

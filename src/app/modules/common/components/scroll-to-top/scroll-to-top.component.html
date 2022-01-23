@@ -1,0 +1,10 @@
+<floating-fab
+    *ngIf="isVisible"
+    [@fade]
+    icon="keyboard_arrow_up"
+    [bottom]="bottom"
+    color="accent"
+    tooltipPosition="left"
+    [title]="title"
+    (click)="scrollToTop()"
+></floating-fab>

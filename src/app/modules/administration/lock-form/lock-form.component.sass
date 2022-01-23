@@ -1,0 +1,9 @@
+@import '../../../../sass/_mixins/media'
+
+.lock-form.horisontal
+    button
+        top: 1px
+    
+    .mat-form-field
+        +respond-to('767px', 'min')
+            margin-bottom: -1em

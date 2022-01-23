@@ -1,0 +1,120 @@
+<div class="container-fluid p-0">
+    <form class="d-flex justify-content-between flex-column flex-lg-row px-4 px-lg-0 mr-0" [formGroup]="form"
+        (ngSubmit)="submit()">
+        <mat-card *ngIf="articleData || categories" [@fade] class="w-100 mx-lg-4 mb-4">
+            <h1 class="mb-4">{{ title }}</h1>
+            <mat-form-field appearance="outline">
+                <mat-label>Название новости</mat-label>
+                <input matInput placeholder="Название" formControlName="title" (keydown)="setTitle($event.target.value)"
+                    (keyup)="setTitle($event.target.value)" (change)="setTitle($event.target.value)" />
+
+                <mat-error *ngIf="form.get('title').errors?.required">Название обязательно</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Краткое описание</mat-label>
+                <textarea matInput placeholder="Краткое описание новости" formControlName="shortDescription"
+                    matTextareaAutosize matAutosizeMinRows="4" maxlength="256"></textarea>
+
+                <mat-hint align="end">{{ form.get('shortDescription').value.length }} / 256</mat-hint>
+                <mat-error *ngIf="form.get('shortDescription').errors?.required">
+                    Описание обязательно
+                </mat-error>
+                <mat-error *ngIf="form.get('shortDescription').errors?.maxlength">
+                    Описание не может содержать более
+                    {{ form.get('shortDescription').errors.maxlength.requiredLength }}
+                    символов
+                </mat-error>
+            </mat-form-field>
+
+            <div class="row">
+                <div class="col-12 col-md-5 col-lg-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Категория</mat-label>
+                        <mat-select formControlName="newsCategoryId">
+                            <ng-container *ngFor="let category of categories">
+                                <mat-option [value]="category.id">
+                                    {{ category.name }}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Дата публикации</mat-label>
+                        <input matInput placeholder="04.08.2019" [matDatepicker]="publishAt" formControlName="publishAt"
+                            required [min]="today" [max]="maxPublishAt" />
+                        <mat-datepicker-toggle matSuffix [for]="publishAt"></mat-datepicker-toggle>
+                        <mat-datepicker #publishAt></mat-datepicker>
+                        <mat-error *ngIf="form.get('publishAt').errors?.required">
+                            Выберите дату
+                        </mat-error>
+                        <mat-error *ngIf="form.get('publishAt').errors?.matDatepickerParse">
+                            Введите дату в формате ДД.ММ.ГГГГ
+                        </mat-error>
+                        <mat-error *ngIf="form.get('publishAt').errors?.matDatepickerMin">
+                            Минимальная дата – сегодня
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Время</mat-label>
+                        <input matInput placeholder="Время публикации" formControlName="publishAtTime" mask="Hh:m0"
+                            [clearIfNotMatch]="true" />
+                        <mat-icon matSuffix>access_time</mat-icon>
+
+                        <mat-error *ngIf="form.get('publishAtTime').errors?.required">Время обязательно</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <ng-container *ngIf="id; else createEditor" [@fade]>
+                <ckeditor [editor]="Editor" [config]="editorConfig" [data]="articleData?.description"
+                    (change)="setDescription($event)" [disabled]="isRequesting" *ngIf="articleData">
+                </ckeditor>
+            </ng-container>
+
+            <ng-template #createEditor>
+                <ckeditor [editor]="Editor" [config]="editorConfig" [data]="articleData?.description"
+                    (change)="setDescription($event)" [disabled]="isRequesting">
+                </ckeditor>
+            </ng-template>
+        </mat-card>
+
+
+        <right-sidebar>
+            <div *ngIf="croppingMode && imagePreview">
+                <cropper-image (onSubmitCrop)="onSubmitCrop($event)" [src]="imagePreview" [isAvatar]="false">
+                </cropper-image>
+            </div>
+
+            <div *ngIf="!croppingMode">
+                <div class="p-0 mb-3 shadow-none" *ngIf="articleData?.imagePath || categories" [@fade]>
+                    <img src="{{ imagePreview ? imagePreview : '../../assets/img/image-placeholder.svg'}}"
+                        alt="Изображение" class="photo-preview w-100 rounded-top object-cover mb-3" />
+                    <button mat-button class="file-input-button w-100" type="button">
+                        <input type="file" accept="image/jpg,image/jpeg" (change)="uploadFile($event.target.files)"
+                            [disabled]="isRequesting" class="cursor-pointer" />
+                        Прикрепить изображение
+                    </button>
+                </div>
+
+                <mat-slide-toggle labelPosition="before" formControlName="isActive" color="primary" class="mb-3">
+                    Показывать пользователям
+                </mat-slide-toggle>
+
+                <button mat-flat-button color="primary" type="submit" class="mb-3 w-100" [disabled]="isRequesting">
+                    <mat-icon>save</mat-icon> Сохранить
+                </button>
+
+                <!-- <button mat-button type="button" (click)="location.back()" [disabled]="isRequesting" class="w-100">
+                        <mat-icon>cancel</mat-icon> Отменить
+                    </button> -->
+            </div>
+        </right-sidebar>
+
+    </form>
+</div>

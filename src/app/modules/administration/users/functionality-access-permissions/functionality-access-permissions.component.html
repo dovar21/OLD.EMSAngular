@@ -1,0 +1,29 @@
+<form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="set()">
+    <mat-tab-group class="mb-3" [class.vertical]="!isSmallScreen" animationDuration="0ms" *ngIf="permissions" [@fade]>
+        <mat-tab
+            label="{{ permissionGroup.categoryName || permissionGroup.groupName }}"
+            *ngFor="let permissionGroup of permissions"
+            [disabled]="disabled"
+        >
+            <mat-slide-toggle
+                labelPosition="before"
+                class="mb-3"
+                color="primary"
+                *ngFor="let permission of permissionGroup.roles"
+                formControlName="{{ permission.name }}"
+            >
+                {{ permission.description }}
+            </mat-slide-toggle>
+        </mat-tab>
+    </mat-tab-group>
+
+    <button
+        mat-flat-button
+        color="primary"
+        class="d-block ml-auto"
+        [disabled]="isRequesting || disabled"
+        *ngIf="permissions"
+    >
+        <mat-icon>save</mat-icon> Сохранить
+    </button>
+</form>

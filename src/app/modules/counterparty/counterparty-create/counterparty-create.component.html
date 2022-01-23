@@ -1,0 +1,99 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isRequesting" class="mat-progress-bar_top"></mat-progress-bar>
+<h1 class="text-center" mat-dialog-title>{{ form.get('name').value ? form.get('name').value : modalAction }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div mat-dialog-content>
+        <div class="form-row">
+            <div class="col-12 col-lg-6">
+                <div *ngIf="croppingMode" class="mb-4">
+                    <cropper-image (onSubmitCrop)="onSubmitCrop($event)"
+                                   [src]="preview"
+                                   [isAvatar]="true">
+                    </cropper-image>
+                </div>
+
+                <div *ngIf="!croppingMode">
+                    <img [src]="counterpartImage ? counterpartImage : '../../../../../../assets/img/noavatar.jpg'"
+                        alt="Фото контакта" class="photo-preview rounded w-100 object-cover mb-4" />
+                </div>
+
+                <div *ngIf="!counterpartImage" class="mb-3">
+                    <button mat-button *ngIf="!croppingMode" class="file-input-button w-100" type="button">
+                        <input type="file"
+                               accept="image/jpg,image/jpeg"
+                               (change)="uploadFile($event.target)"
+                               class="cursor-pointer" />
+                        Кликните для выбора фото
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 d-flex flex-column justify-content-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Имя</mat-label>
+                    <input matInput placeholder="Имя" formControlName="name" />
+
+                    <mat-error *ngIf="form.get('name').errors?.required">Имя обязательно</mat-error>
+                    <mat-error *ngIf="form.get('name').errors?.duplicateTitle">{{ validationErrors[1005] }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Страна</mat-label>
+                    <mat-select formControlName="countryId" required>
+                        <mat-option *ngFor="let country of countries" [value]="country.id">
+                            {{ country.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('countryId').errors?.required">Выберите страну</mat-error>
+                </mat-form-field>
+
+                <div class="form-row">
+                    <div class="col-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>ИНН</mat-label>
+                            <input matInput placeholder="Веб-сайт" formControlName="itn" />
+                            <mat-error *ngIf="form.get('itn').errors?.required">ИНН обязательно</mat-error>
+                            <mat-error *ngIf="form.get('itn').errors?.duplicateTitle">{{ validationErrors[1005] }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Веб-сайт</mat-label>
+                            <input matInput placeholder="Веб-сайт" formControlName="website" />
+                            <mat-error *ngIf="form.get('website').errors?.required">Веб-сайт обязательно</mat-error>
+                            <mat-error *ngIf="form.get('website').errors?.duplicateTitle">{{ validationErrors[1005] }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Тип</mat-label>
+                    <mat-select formControlName="selectTypes"
+                                [(value)]="selectTypes"
+                                placeholder="Тип"
+                                multiple>
+                            <mat-option value="Поставщик">Поставщик</mat-option>
+                            <mat-option value="Покупатель">Покупатель</mat-option>
+                        </mat-select>
+                    <mat-error *ngIf="form.get('selectTypes').errors?.required">Выберите поставщика/покупателья</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <ckeditor [editor]="Editor" [config]="editorConfig" (change)="setBody($event)"></ckeditor>
+        <mat-error *ngIf="form.get('description').errors?.required">Описание обязателено</mat-error>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button mat-button type="button" class="mat-button-secondary mr-3" (click)="dialogRef.close()"
+                [disabled]="isRequesting">Отменить
+            </button>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="isRequesting">
+                <mat-icon>save</mat-icon> Сохранить
+            </button>
+        </div>
+    </div>
+</form>

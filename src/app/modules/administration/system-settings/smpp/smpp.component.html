@@ -1,0 +1,29 @@
+<mat-accordion *ngIf="items">
+    <mat-expansion-panel *ngFor="let item of items; let i = index" [expanded]="i === expandedPanelIndex">
+        <mat-expansion-panel-header>
+            <mat-panel-title>{{ item.providerName }}</mat-panel-title>
+            <mat-panel-description *ngIf="item.isDefault">Используется по умолчанию</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <smpp-config-form
+            [data]="item"
+            [isDefault]="item.isDefault"
+            (onSubmit)="setDefault($event)"
+            (onUndoCreate)="items.shift(); expandedPanelIndex = null"
+            (onProviderNameChange)="
+                $event ? (item.providerName = $event) : (item.providerName = 'Создание конфигурации')
+            "
+        ></smpp-config-form>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<div class="text-center" *ngIf="errorLoadingResults" [@fade]>
+    <h4>Ошибка</h4>
+    <p class="text-muted mb-4">Не удалось загрузить список конфигураций.</p>
+
+    <button mat-flat-button color="primary" (click)="getSettings()">
+        <mat-icon>refresh</mat-icon> Загрузить еще раз
+    </button>
+</div>
+
+<floating-fab title="Добавить конфигурацию" icon="add" (click)="expandCreateForm()"></floating-fab>

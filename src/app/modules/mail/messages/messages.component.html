@@ -1,0 +1,44 @@
+<mat-card class="messages p-0 d-flex shadow-none">
+    <div class="list border-right position-relative d-print-none">
+        <div class="filter w-100 position-relative d-flex align-items-center border-bottom position-absolute">
+            <input
+                type="text"
+                placeholder="Заголовок или имя"
+                class="input pl-5 pr-4 py-3 w-100 border-top-0 border-0 rounded-top"
+                (input)="filterByTitle($event)"
+            />
+            <mat-icon class="position-absolute">search</mat-icon>
+        </div>
+
+        <perfect-scrollbar *ngIf="messages.length" [@fade]>
+            <infinite-scroll (scrolled)="infiniteScroll()" [options]="infiniteScrollOptions">
+                <message-preview
+                    *ngFor="let message of messages"
+                    [message]="message"
+                    (openMessage)="openMessage($event)"
+                    [messageType]="messagesType"
+                    [openedMessageID]="currentMessage?.id"
+                ></message-preview>
+            </infinite-scroll>
+        </perfect-scrollbar>
+
+        <div class="no-results h-100 d-flex justify-content-center align-items-center p-4" *ngIf="noResults" [@fade]>
+            Ничего не найдено
+        </div>
+    </div>
+
+    <div class="full-view w-100">
+        <div
+            class="choose-message d-flex flex-column align-items-center justify-content-center h-100"
+            *ngIf="!currentMessage; else currentMessageTemplate"
+            [@fade]
+        >
+            <mat-icon class="mb-2">chat_bubble</mat-icon>
+            <span>Выберите сообщение слева</span>
+        </div>
+
+        <ng-template #currentMessageTemplate>
+            <message-full-view [message]="currentMessage"></message-full-view>
+        </ng-template>
+    </div>
+</mat-card>

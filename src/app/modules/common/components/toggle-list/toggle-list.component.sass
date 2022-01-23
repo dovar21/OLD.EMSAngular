@@ -1,0 +1,23 @@
+@import '../../../../../sass/vars'
+
+.toggle-list
+    .link,
+    .count
+        transition: background-color .2s
+
+    .link
+        color: $grey
+        padding-top: 10px
+        padding-bottom: 10px
+
+        &:hover
+            background-color: transparentize($white, .5)
+
+        &.active
+            background-color: $white
+
+            .count
+                background-color: #fff
+    
+    .count
+        background-color: $white

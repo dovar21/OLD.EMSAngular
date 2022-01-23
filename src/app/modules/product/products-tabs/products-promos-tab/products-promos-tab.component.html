@@ -1,0 +1,52 @@
+<mat-card *ngIf="promos && promos.length > 0" class="p-0 table-responsive mb-3">
+    <perfect-scrollbar class="table-wrapper">
+        <table mat-table [dataSource]="promos">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Название</th>
+                <td mat-cell *matCellDef="let promo">
+                    {{ promo.name }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discountAmount">
+                <th mat-header-cell *matHeaderCellDef>Размер скидки</th>
+                <td mat-cell *matCellDef="let promo">
+                    {{ promo.discountAmount }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef>Дата начала</th>
+                <td mat-cell *matCellDef="let promo">
+                    {{ promo.startDate }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="endDate">
+                <th mat-header-cell *matHeaderCellDef>Дата завершения</th>
+                <td mat-cell *matCellDef="let promo">
+                    {{ promo.endDate }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isWholesaleSale">
+                <th mat-header-cell *matHeaderCellDef>Оптовая продажа</th>
+                <td mat-cell *matCellDef="let promo">
+                    <table-badge [state]="promo.isWholesaleSale" value="{{ promo.isWholesaleSale ? 'да' : 'нет' }}"></table-badge>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isRetailSale">
+                <th mat-header-cell *matHeaderCellDef>Розничная продажа</th>
+                <td mat-cell *matCellDef="let promo">
+                    <table-badge [state]="promo.isRetailSale" value="{{ promo.isRetailSale ? 'да' : 'нет' }}"></table-badge>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedStocksColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedStocksColumns"></tr>
+        </table>
+    </perfect-scrollbar>
+</mat-card>
+
+<p class="text-center text-muted" *ngIf="(promos && promos.length === 0) || !promos">Этот товар не участвует ни в одной акции</p>

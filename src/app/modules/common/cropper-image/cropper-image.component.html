@@ -1,0 +1,25 @@
+<div *ngIf="imageSource">
+    <div class="mb-3 px-3 text-center">Выбранная область будет показываться на Вашей странице.</div>
+    <div class="img-container d-flex justify-content-center position-relative mb-4">
+        <img #image [src]="imageSource" crossorigin excludeFallback/>
+        <div class="icons text-center p-2 position-absolute d-flex align-items-center">
+            <mat-icon class="rotate-left mr-4" (click)="rotateLeft()">replay</mat-icon>
+            <mat-icon class="rotate-right" (click)="rotateRight()">replay</mat-icon>
+        </div>
+        </div>
+        <div class="buttons d-flex justify-content-end">
+            <button mat-button
+            class="mr-3 mat-button-secondary"
+            type="button"
+            (click)="cancelCropImg()">
+            Отменить
+        </button>
+        <button mat-flat-button
+                color="primary"
+                type="submit"
+                (click)="acceptCropImg()">
+                Обрезать
+            <mat-icon class="ml-1">crop</mat-icon>
+        </button>
+    </div>
+</div>

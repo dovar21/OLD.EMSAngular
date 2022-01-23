@@ -1,0 +1,113 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="m-0">Реализация</mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="groupForm">
+        <mat-list role="list" class="p-0 no-mt no-mb">
+            <mat-list-item role="listitem">
+                <span class="key mr-auto">Штрих код</span>
+                <span class="value text-right">
+                    <input matInput
+                           type="number"
+                           min="1"
+                           placeholder="Не задано"
+                           formControlName="barcode"
+                           (blur)="onBlurMethod('barcode')"/>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key mr-auto">Минимум на складах</span>
+                <span class="value text-right">
+                    <input matInput
+                           type="number"
+                           min="1"
+                           placeholder="Не задано"
+                           formControlName="warehouseMinQuantity"
+                           (blur)="onBlurMethod('warehouseMinQuantity')"/>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key mr-auto">Розничная цена</span>
+                <span class="value text-right">
+                    <input matInput
+                           type="number"
+                           min="0.01"
+                           placeholder="Не задано"
+                           formControlName="retailPrice"
+                           (blur)="onBlurMethod('retailPrice')"/>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key mr-auto">Оптовая цена</span>
+                <span class="value text-right">
+                    <input matInput
+                           type="number"
+                           min="0.01"
+                           placeholder="Не задано"
+                           formControlName="wholesalePrice"
+                           (blur)="onBlurMethod('wholesalePrice')"/>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key mr-auto">Минимальная оптовая продажа в ед.</span>
+                <span class="value text-right">
+                    <input matInput
+                           type="number"
+                           min="1"
+                           placeholder="Не задано"
+                           formControlName="minWholesaleSellQuantity"
+                           (blur)="onBlurMethod('minWholesaleSellQuantity')"/>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <mat-slide-toggle formControlName="ignoreDiscounts"
+                                  (change)="toggle($event, 'ignoreDiscounts')"
+                                  labelPosition="before"
+                                  color="primary" >
+                    Игнорировать скидки
+                </mat-slide-toggle>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <mat-slide-toggle formControlName="isAvailableInShops"
+                                  (change)="toggle($event, 'isAvailableInShops')"
+                                  labelPosition="before"
+                                  color="primary" >
+                    Разрешено продавать в магазинах
+                </mat-slide-toggle>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <mat-slide-toggle formControlName="isAvailableForWholesale"
+                                  (change)="toggle($event, 'isAvailableForWholesale')"
+                                  labelPosition="before"
+                                  color="primary" >
+                    Разрешено продавать оптом
+                </mat-slide-toggle>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <mat-slide-toggle formControlName="isVisibleOnSite"
+                                  (change)="toggle($event, 'isVisibleOnSite')"
+                                  labelPosition="before"
+                                  color="primary" >
+                    Отображать на сайте
+                </mat-slide-toggle>
+            </mat-list-item>
+        </mat-list>
+    </form>
+</mat-card>

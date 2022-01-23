@@ -1,0 +1,51 @@
+<mat-card class="dashboard-widget last-news-widget">
+    <mat-card-header class="align-items-start">
+        <mat-card-title class="text-uppercase font-weight-bold">Последние новости</mat-card-title>
+        <a class="more-link p-0 border-0 ml-auto" href="javascript:undefined" [routerLink]="['/information/news']">
+            Все новости <mat-icon class="ml-1 mr-0">arrow_forward</mat-icon>
+        </a>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-list *ngIf="data && data.length > 0" role="list">
+            <mat-list-item role="listitem" *ngFor="let post of data; let last = last" class="h-auto d-flex flex-column">
+                <div class="post w-100">
+                    <div class="d-flex align-items-center">
+                        <a [routerLink]="['/information/news', post.id]">
+                            <img src="{{ post.imagePath }}"
+                                 alt="{{ post.title }}"
+                                 title="{{ post.title }}"
+                                 class="thumb rounded-circle mr-3"/>
+                        </a>
+                        <div class="textual-info d-flex flex-column">
+                            <a [routerLink]="['/information/news', post.id]" class="details-link">
+                                <span class="title text-truncate" title="{{ post.title }}">{{ post.title }}</span>
+                            </a>
+
+                            <div class="post-meta">
+                                <div class="post-meta__item mr-2">
+                                    <mat-icon class="mr-1">folder</mat-icon>
+                                    {{ post.newsCategoryName }}
+                                </div>
+                                <div class="post-meta__item">
+                                    <mat-icon class="mr-1">date_range</mat-icon> {{ post.publishAt }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button *ngIf="permissions['News.Update']"
+                                mat-mini-fab
+                                class="mat-fab-basic ml-auto edit-btn mat-fab-basic-secondary"
+                                matTooltip="Редактировать новость"
+                                [routerLink]="['/information/news/edit', post.id]"
+                                matTooltipPosition="above">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+
+                    <mat-divider class="my-3" *ngIf="!last"></mat-divider>
+                </div>
+            </mat-list-item>
+        </mat-list>
+        <p *ngIf="data && !data.length" class="text-muted">Нет новостей</p>
+    </mat-card-content>
+</mat-card>

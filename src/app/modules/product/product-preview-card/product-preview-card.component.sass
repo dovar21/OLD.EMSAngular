@@ -1,0 +1,39 @@
+@import '../../../../sass/vars'
+@import '../../../../sass/_mixins/media'
+    
+.product
+    margin-bottom: 30px
+
+    .img
+        height: 200px
+        object-fit: cover
+
+        &-link
+            margin: -30px -30px 30px !important
+
+    .title
+        font-size: 1.4rem
+        height: 27px
+    
+        &-link
+            color: $black
+
+            &:hover
+                color: $purple
+    
+    .active-badge
+        width: 10px
+        height: 10px
+
+        &_active
+            background-color: $green
+        
+        &_inactive
+            background-color: $red
+
+    .description
+        height: 42px
+        overflow: hidden
+    
+    .price
+        font-size: 1.5rem

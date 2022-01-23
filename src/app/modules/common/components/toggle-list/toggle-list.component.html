@@ -1,0 +1,12 @@
+<nav class="toggle-list list-unstyled">
+    <li *ngFor="let item of items" class="item" matRipple>
+        <a
+            (click)="select(item.id)"
+            href="javascript:undefined"
+            class="link px-3 d-flex justify-content-between border-0 rounded align-items-center"
+            [class.active]="item.id === activeItemId"
+        >
+            {{ item.name }} <span class="ml-3 count d-block rounded py-1 px-2">{{ item.itemsCount }}</span>
+        </a>
+    </li>
+</nav>

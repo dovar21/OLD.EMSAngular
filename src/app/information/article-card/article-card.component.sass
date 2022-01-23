@@ -1,0 +1,49 @@
+@import '../../../sass/_vars'
+@import '../../../sass/_mixins/_media'
+    
+.post
+    &__img
+        height: 500px
+        object-fit: cover
+        +respond-to(laptop)
+            height: 400px
+        +respond-to(phone-land)
+            height: 300px
+        +respond-to(phone)
+            height: 200px
+    
+    &__title-link
+        color: $black
+
+        &:hover
+            color: $purple
+    
+    &__active-badge
+        width: 10px
+        height: 10px
+
+        &_active
+            background-color: $green
+        
+        &_inactive
+            background-color: $red
+
+    &-meta
+        display: flex
+        justify-content: column
+
+        &__item
+            display: flex
+            align-content: center
+            align-items: center
+            font-size: 14px
+
+            mat-icon
+                font-size: 16px
+    
+    &__mini-profile
+        flex: 10
+        +respond-to(phone-land)
+            flex: 9
+
+    

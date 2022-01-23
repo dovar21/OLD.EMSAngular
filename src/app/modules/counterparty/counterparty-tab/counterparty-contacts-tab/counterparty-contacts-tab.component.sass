@@ -1,0 +1,42 @@
+@import '../../../../../sass/vars'
+
+.interested-employee
+    margin-bottom: 30px
+
+    .photo
+        width: 120px
+        height: 120px
+
+    .fullname
+        max-width: 200px
+        height: 48px
+
+    &:hover
+        .edit-button,
+        .delete-button
+            opacity: 1
+
+.edit-button
+    top: 15px
+    right: 55px
+    opacity: 0
+    transition: 400ms opacity
+
+.delete-button
+    top: 15px
+    opacity: 0
+    right: 15px
+    transition: 400ms opacity
+
+.wrap-divider
+    margin: 0 -30px 0 -30px
+
+.counter-description,
+.counter-contacts
+    height: 42px
+    overflow: hidden
+
+.counter-fullname
+.counter-position
+    height: 20px
+    overflow: hidden

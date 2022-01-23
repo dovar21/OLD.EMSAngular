@@ -1,0 +1,76 @@
+<mat-card class="introduction-card rounded-0 d-flex align-items-center justify-content-between"
+          *ngIf="counterparty"
+          [@fade]>
+    <form [formGroup]="groupForm" class="d-flex align-items-center justify-content-between w-100">
+        <div class="text-center d-flex align-items-center h-100">
+            <ng-container *ngIf="counterparty?.imagePathSmall; else genericPhoto">
+                <img src="{{ counterparty.imagePathSmall }}"
+                     alt="{{ counterparty.name }}"
+                     class="img"
+                    (click)="openDialogLightbox(counterparty.imagePathSmall, counterparty.name, true)" />
+            </ng-container>
+
+            <ng-template #genericPhoto>
+                <img src="../../../../../../assets/img/noavatar.jpg" alt="{{ counterparty.name }}" class="img" />
+            </ng-template>
+
+            <div class="counterparties-text ml-3 text-left">
+                <h1 class="introduction-card__name mb-0">
+                    <input matInput formControlName="name" [placeholder]="counterparty.name"/>
+                </h1>
+
+                <span class="introduction-card__short-description">
+                    <input type="text"
+                           class="text-left"
+                           placeholder="Не задано"
+                           matInput
+                           formControlName="countryName"
+                           [matAutocomplete]="autoCountry"
+                           (focusout)="validationAutocomplete($event)"/>
+                    <mat-autocomplete class="light-autocomplete"
+                                      #autoCountry="matAutocomplete"
+                                      (optionSelected)="productPropertiesSelect($event.option.value)">
+                        <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
+                            {{ country.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="groupForm.get('countryName').errors?.required">
+                        Страна производства обязательна
+                    </mat-error>
+                    <mat-error *ngIf="groupForm.get('countryName').errors?.objectNotFound">
+                        Страна производства не найдена
+                    </mat-error>
+                </span>
+            </div>
+        </div>
+        <h1>{{ counterparty.balance }} <span class="text-muted">TJS</span></h1>
+    </form>
+</mat-card>
+<div class="container-fluid" *ngIf="counterparty" [@fade]>
+    <mat-tab-group dynamicHeight
+                   animationDuration="0ms"
+                   [selectedIndex]="activeTabIndex"
+                   (selectedTabChange)="catchTabChange($event)"
+                   class="global-tabgroup">
+        <div *ngIf="counterparty" class="container-fluid">
+            <mat-tab label="Основное" matRipple matRippleColor="#533dfe">
+                <counterparty-properties-tab [counterparty]="counterparty"
+                                             [groupForm]="groupForm"
+                                             [payload]="payload">
+                </counterparty-properties-tab>
+            </mat-tab>
+            <mat-tab label="Реквизиты">
+                <!--<product-residue-tab [total]="total" [perRegions]="perRegions"></product-residue-tab>-->
+            </mat-tab>
+            <mat-tab label="Накладные">
+                <counterparty-waybills-tab [counterpartyId]="id"></counterparty-waybills-tab>
+            </mat-tab>
+            <mat-tab label="Контакты">
+                <counterparty-contacts-tab [counterpartyId]="counterparty.id"></counterparty-contacts-tab>
+            </mat-tab>
+            <mat-tab label="Офисы">
+                <counterparty-offices-tab [counterparty]="counterparty"></counterparty-offices-tab>
+            </mat-tab>
+        </div>
+    </mat-tab-group>
+</div>

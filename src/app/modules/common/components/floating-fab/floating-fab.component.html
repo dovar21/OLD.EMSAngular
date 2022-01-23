@@ -1,0 +1,26 @@
+<ng-container *ngIf="link !== './'; else onPageAction">
+    <a
+        mat-fab
+        class="add position-fixed"
+        matTooltip="{{ title }}"
+        [matTooltipPosition]="tooltipPosition"
+        [routerLink]="[link]"
+        [color]="color"
+        [ngStyle]="{ bottom: bottom }"
+    >
+        <mat-icon>{{ icon }}</mat-icon>
+    </a>
+</ng-container>
+
+<ng-template #onPageAction>
+    <a
+        mat-fab
+        class="add position-fixed"
+        matTooltip="{{ title }}"
+        [matTooltipPosition]="tooltipPosition"
+        [color]="color"
+        [ngStyle]="{ bottom: bottom }"
+    >
+        <mat-icon>{{ icon }}</mat-icon>
+    </a>
+</ng-template>

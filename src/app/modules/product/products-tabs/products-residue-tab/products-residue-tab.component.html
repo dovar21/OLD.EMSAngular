@@ -1,0 +1,29 @@
+<mat-card class="p-4 mb-4">
+    <mat-card-header class="justify-content-between align-items-center">
+        <mat-card-title class="mb-0 mr-3">Текущий остаток</mat-card-title>
+        <span class="h2 m-0 text-muted">{{ total }}</span>
+    </mat-card-header>
+</mat-card>
+
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let perRegion of perRegions">
+        <mat-card class="mb-4" *ngIf="perRegions && perRegions.length > 0">
+            <mat-card-header class="justify-content-between align-items-center mb-4">
+                <mat-card-title class="mb-0 mr-3">{{ perRegion.region }}</mat-card-title>
+                <span class="m-0 text-muted h4">{{ perRegion.total }}</span>
+            </mat-card-header>
+
+            <mat-card-content>
+                <mat-list role="list" class="p-0 no-mt no-mb">
+                    <ng-container *ngFor="let warehouse of perRegion.perWarehouse; let last = last">
+                        <mat-list-item role="listitem">
+                            <span class="key mr-auto">{{ warehouse.title }}</span>
+                            <span class="value text-right">{{ warehouse.amount }}</span>
+                        </mat-list-item>
+                        <mat-divider *ngIf="!last"></mat-divider>
+                    </ng-container>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

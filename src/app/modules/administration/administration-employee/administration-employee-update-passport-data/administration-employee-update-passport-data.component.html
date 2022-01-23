@@ -1,0 +1,143 @@
+<div class="container-fluid p-0">
+    <form class="d-flex justify-content-between flex-column flex-lg-row px-4 px-lg-0 mr-0" [formGroup]="form" (ngSubmit)="submit()">
+
+        <mat-card *ngIf="passportData || nationalities" [@fade] class="w-100 mx-lg-4 mb-4">
+                <h1 class="mb-4">{{ title }}</h1>
+                <mat-card-header>
+                    <mat-card-title>Цифровые данные</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isRequesting"
+                        class="mat-progress-bar_top rounded-top"></mat-progress-bar>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-xl-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Серия и номер</mat-label>
+                                <input matInput placeholder="А6771586" formControlName="passportNumber" required />
+
+                                <mat-error *ngIf="form.get('passportNumber').errors?.required">
+                                    Серия и номер обязательны
+                                </mat-error>
+                                <mat-error *ngIf="form.get('passportNumber').errors?.minlength">
+                                    Серия и номер не могут быть менее
+                                    {{ form.get('passportNumber').errors.minlength.requiredLength }} символов
+                                </mat-error>
+                                <mat-error *ngIf="form.get('passportNumber').errors?.duplicatePassportNumber">
+                                    {{ validationErrors[1004] }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Дата выдачи</mat-label>
+                                <input matInput placeholder="12.10.2002" [matDatepicker]="passportIssueDate"
+                                    formControlName="passportIssueDate" [max]="today" required />
+                                <mat-datepicker-toggle matSuffix [for]="passportIssueDate"></mat-datepicker-toggle>
+                                <mat-datepicker #passportIssueDate></mat-datepicker>
+                                <mat-error *ngIf="form.get('passportIssueDate').errors?.required">
+                                    Выберите дату
+                                </mat-error>
+                                <mat-error *ngIf="form.get('passportIssueDate').errors?.matDatepickerParse">
+                                    Введите дату в формате ДД.ММ.ГГГГ
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-xl-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Орган, выдавший паспорт</mat-label>
+                                <input matInput placeholder="ОВД р-на Шохмансур, г. Душанбе"
+                                    formControlName="passportIssuer" required />
+
+                                <mat-error *ngIf="form.get('passportIssuer').errors?.required">
+                                    Поле обязательно
+                                </mat-error>
+                                <mat-error *ngIf="form.get('passportIssuer').errors?.minlength">
+                                    Название органа не может быть менее
+                                    {{ form.get('passportIssuer').errors.minlength.requiredLength }} символов
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Национальность</mat-label>
+                                <mat-select formControlName="nationalityId" required>
+                                    <mat-option *ngFor="let nationality of nationalities" [value]="nationality.id">
+                                        {{ nationality.name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="form.get('nationalityId').errors?.required">
+                                    Национальность обязательна
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Дата рождения</mat-label>
+                                <input matInput placeholder="15.09.1995" [matDatepicker]="dateOfBirth"
+                                    formControlName="dateOfBirth" required [min]="minDate" [max]="aultDate" />
+                                <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                                <mat-datepicker #dateOfBirth></mat-datepicker>
+                                <mat-error *ngIf="form.get('dateOfBirth').errors?.required">
+                                    Выберите дату
+                                </mat-error>
+                                <mat-error *ngIf="form.get('dateOfBirth').errors?.matDatepickerParse">
+                                    Введите дату в формате ДД.ММ.ГГГГ
+                                </mat-error>
+                                <mat-error *ngIf="form.get('dateOfBirth').errors?.matDatepickerMin">
+                                    Минимальная дата – 01.01.1900
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-xl-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Прописка</mat-label>
+                                <input matInput placeholder="г. Душанбе, ул. Лохути, д. 5, кв. 8"
+                                    formControlName="passportAddress" required />
+
+                                <mat-error *ngIf="form.get('passportAddress').errors?.required">
+                                    Прописка обязательна
+                                </mat-error>
+                                <mat-error *ngIf="form.get('passportAddress').errors?.minlength">
+                                    Прописка не может быть менее
+                                    {{ form.get('passportAddress').errors.minlength.requiredLength }} символов
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <right-sidebar>
+                <div *ngIf="croppingMode && imagePreview">
+                    <cropper-image (onSubmitCrop)="onSubmitCrop($event)" [src]="uploadedImage" [isAvatar]="true">
+                    </cropper-image>
+                </div>
+
+                <div *ngIf="!croppingMode">
+                    <div class="mb-4" *ngIf="passportData || nationalities" [@fade]>
+                        <img src="{{ imagePreview ? imagePreview : '../../../../assets/img/image-placeholder.svg'}}"
+                             alt="Скан паспорта" class="photo-preview w-100 object-cover mb-3" />
+                        <button mat-button class="file-input-button w-100" type="button"
+                            [disabled]="isRequesting || isEmployeeLocked">
+                            <input type="file" accept="image/jpg,image/jpeg"
+                                (change)="uploadFile($event.target.files)"
+                                [disabled]="isRequesting || isEmployeeLocked" class="cursor-pointer" />
+                            Загрузить фото
+                        </button>
+                    </div>
+
+                    <button mat-flat-button color="primary" *ngIf="passportData || nationalities" [@fade] class="w-100"
+                        [disabled]="isRequesting || isEmployeeLocked">
+                        <mat-icon>save</mat-icon> Сохранить
+                    </button>
+                </div>
+            </right-sidebar>
+    </form>
+</div>

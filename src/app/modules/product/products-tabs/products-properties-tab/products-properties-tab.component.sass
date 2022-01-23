@@ -1,0 +1,27 @@
+@import '../../../../../sass/vars'
+@import '../../../../../sass/_mixins/media'
+
+.grid-container
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr
+    gap: 30px
+    grid-template-areas: "Images Properties Sell" "Description Description Sell"
+    +respond-to(laptop)
+        grid-template-columns: 1fr 1fr
+        grid-template-areas: "Images Properties" "Sell Description"
+    +respond-to(tablet)
+        grid-template-columns: 1fr
+        grid-template-areas: "Images" "Properties" "Sell" "Description"
+        gap: 1rem
+
+.Images
+    grid-area: Images
+
+.Properties
+    grid-area: Properties
+
+.Sell
+    grid-area: Sell
+
+.Description
+    grid-area: Description

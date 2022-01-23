@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="signIn()">
+    <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Номер телефона</mat-label>
+        <input
+            matInput
+            hideRequiredMarker
+            formControlName="phoneNumber"
+            placeholder="934114400"
+            type="tel"
+            maxlength="9"
+        />
+        <mat-icon matSuffix>local_phone</mat-icon>
+
+        <mat-error *ngIf="form.get('phoneNumber').errors?.required">Введите номер телефона</mat-error>
+        <mat-error *ngIf="form.get('phoneNumber').errors?.minlength">
+            Номер не может быть менее {{ form.get('phoneNumber').errors.minlength.requiredLength }} цифр
+        </mat-error>
+        <mat-error *ngIf="form.get('phoneNumber').errors?.pattern">
+            Только цифры
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Пароль</mat-label>
+        <input matInput hideRequiredMarker formControlName="password" placeholder="**********" type="password" />
+        <mat-icon matSuffix>lock</mat-icon>
+
+        <mat-error *ngIf="form.get('password').errors?.required">Введите пароль</mat-error>
+    </mat-form-field>
+
+    <div class="d-flex justify-content-between mb-4 align-items-center">
+        <mat-checkbox formControlName="rememberMe" color="primary">Запомнить</mat-checkbox>
+        <a href="#" class="link" (click)="resetPassword(); (false)">Забыл пароль</a>
+    </div>
+
+    <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        class="btn-lg btn-block"
+        [disabled]="authComponent.isRequesting"
+    >
+        Войти
+    </button>
+</form>

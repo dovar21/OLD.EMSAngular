@@ -1,0 +1,285 @@
+<mat-card class="introduction-card rounded-0 d-flex align-items-center justify-content-between" *ngIf="essentialData"
+    [@fade]>
+    <div class="d-flex flex-column flex-md-row align-items-center m-auto m-md-0">
+        <ng-container *ngIf="essentialData?.photoPathSmall; else genericPhoto">
+            <img src="{{ essentialData.photoPath }}" alt="{{ essentialData.fullName }}"
+                class="introduction-card__avatar rounded-circle mr-md-4 mb-3 mb-md-0 object-cover cursor-pointer"
+                (click)="openDialogLightbox(essentialData.photoPath, essentialData.fullName)" />
+        </ng-container>
+
+        <ng-template #genericPhoto>
+            <img src="../../../../../../assets/img/noavatar.jpg" alt="{{ essentialData.fullName }}"
+                class="introduction-card__avatar rounded-circle mr-md-4 mb-3 mb-md-0 object-cover" />
+        </ng-template>
+
+        <div class="text-center text-md-left mb-3 mb-md-0" *ngIf="essentialData">
+            <h1 class="introduction-card__name mb-1">{{ essentialData.fullName }}</h1>
+            <span class="introduction-card__position">
+                {{ essentialData.department }} › {{ essentialData.position }}
+            </span>
+        </div>
+
+        <button mat-button class="mat-button-sm w-auto d-md-none" [matMenuTriggerFor]="actions"
+            [disabled]="isRequesting">
+            Действия
+        </button>
+    </div>
+
+    <button mat-mini-fab class="mat-fab-basic ml-auto d-none d-md-block" matTooltip="Действия" matTooltipPosition="left"
+        [matMenuTriggerFor]="actions" [disabled]="isRequesting">
+        <mat-icon>more_horiz</mat-icon>
+    </button>
+
+    <mat-menu #actions="matMenu">
+        <button mat-menu-item *ngIf="permissions['Employees.Update']" [matMenuTriggerFor]="editSubmenu"
+            [disabled]="essentialData.lockDate">
+            <mat-icon>edit</mat-icon> Редактировать
+        </button>
+
+        <button mat-menu-item (click)="export(id)">
+            <mat-icon>cloud_download</mat-icon> Выгрузить карточку
+        </button>
+    </mat-menu>
+
+    <mat-menu #editSubmenu="matMenu">
+        <button mat-menu-item [routerLink]="['/administration/employees/edit/essentials/', id]">
+            <mat-icon>account_circle</mat-icon> Основные данные
+        </button>
+
+        <button mat-menu-item [routerLink]="['/administration/employees/edit/passport-data/', id]">
+            <mat-icon>assignment_ind</mat-icon> Паспортные данные
+        </button>
+    </mat-menu>
+</mat-card>
+
+<div class="container-fluid" *ngIf="essentialData" [@fade]>
+    <div class="row">
+        <div class="col-12 col-md-7 col-lg-8" [class.col-xl-9]="!isSidebarOpened">
+            <mat-tab-group dynamicHeight animationDuration="0ms" (selectedTabChange)="catchTabChange($event)"
+                mat-stretch-tabs [(selectedIndex)]="activeTabIndex" class="global-tabgroup mb-2 mb-md-0">
+                <div class="container-fluid">
+                    <mat-tab label="Главное" matRipple matRippleColor="#533dfe">
+                        <mat-card>
+                            <mat-list role="list" class="p-0 no-mt no-mb">
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Дата рождения</span>
+                                    <span class="value text-right">{{ essentialData.dateOfBirth }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Подразделение</span>
+                                    <span class="value text-right">{{ essentialData.department }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Позиция</span>
+                                    <span class="value text-right">{{ essentialData.position }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Дата приема на работу</span>
+                                    <span class="value text-right">{{ essentialData.hireDate }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Телефон</span>
+                                    <span class="value text-right">{{ essentialData.phone }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Email</span>
+                                    <span class="value text-right">{{ essentialData.email }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Фактический адрес</span>
+                                    <span class="value text-right">{{ essentialData.factualAddress }}</span>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+
+                                <mat-list-item role="listitem">
+                                    <span class="key mr-auto">Пол</span>
+                                    <span class="value text-right">{{ essentialData.genderName }}</span>
+                                </mat-list-item>
+                                <mat-divider *ngIf="essentialData.description"></mat-divider>
+                            </mat-list>
+
+                            <div class="d-flex flex-column mt-5" *ngIf="essentialData.description">
+                                <span class="key mr-auto mb-2">Дополнительное описание</span>
+                                <span class="text-muted">
+                                    {{ essentialData.description ? essentialData.description : 'Не задано' }}
+                                </span>
+                            </div>
+                        </mat-card>
+                    </mat-tab>
+
+                    <mat-tab label="Паспортные данные">
+                        <div class="d-flex flex-column justify-content-center"
+                            *ngIf="passportData && !passportData?.passportNumber" [@fade]>
+                            <alert message="У этого сотрудника не заполнены паспортные данные" type="info"
+                                class="text-center mb-3"></alert>
+
+                            <a mat-flat-button color="primary" class="mx-auto"
+                                [routerLink]="['/administration/employees/edit/passport-data', id]">
+                                Добавить паспортные данные
+                            </a>
+                        </div>
+                        <div class="row" *ngIf="passportData && passportData?.passportNumber" [@fade]>
+                            <div class="col-12 col-lg-5 col-xl-4 mb-4 mb-lg-0">
+                                <mat-card class="p-0">
+                                    <img src="{{
+                                            passportData?.passportScanPath
+                                                ? passportData.passportScanPath
+                                                : '../../../../../../assets/img/image-placeholder.svg'
+                                        }}" alt="{{ essentialData.fullName }}"
+                                        class="passport-scan w-100 rounded-top object-cover" />
+                                    <div class="p-4">
+                                        <a href="{{ passportData?.passportScanPath }}" mat-button class="w-100"
+                                            download="{{ passportData?.passportScanPath }}" target="_blank">
+                                            Скачать скан документа
+                                        </a>
+                                    </div>
+                                </mat-card>
+                            </div>
+                            <div class="col-12 col-lg-7 col-xl-8">
+                                <mat-card>
+                                    <mat-list role="list" class="p-0 no-mt no-mb">
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Серия и номер</span>
+                                            <span class="value text-right">
+                                                {{
+                                                    passportData?.passportNumber
+                                                        ? passportData.passportNumber
+                                                        : 'Не заполнено'
+                                                }}
+                                            </span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">
+                                                Орган, выдавший паспорт
+                                            </span>
+                                            <span class="value text-right">
+                                                {{
+                                                    passportData?.passportIssuer
+                                                        ? passportData.passportIssuer
+                                                        : 'Не заполнено'
+                                                }}
+                                            </span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Дата выдачи</span>
+                                            <span class="value text-right">
+                                                {{
+                                                    passportData?.passportIssueDate
+                                                        ? passportData.passportIssueDate
+                                                        : 'Не заполнено'
+                                                }}
+                                            </span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Национальность</span>
+                                            <span class="value text-right">
+                                                {{
+                                                    passportData?.nationality
+                                                        ? passportData.nationality
+                                                        : 'Не заполнено'
+                                                }}
+                                            </span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Дата рождения</span>
+                                            <span class="value text-right">
+                                                {{
+                                                    passportData?.dateOfBirth
+                                                        ? passportData.dateOfBirth
+                                                        : 'Не заполнено'
+                                                }}
+                                            </span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Прописка</span>
+                                            <span class="value text-right">
+                                                {{
+                                                    passportData?.passportAddress
+                                                        ? passportData.passportAddress
+                                                        : 'Не заполнено'
+                                                }}
+                                            </span>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Учетная запись">
+                        <ng-container *ngIf="activeTabLabel === 'Учетная запись'">
+                            <user employeeId="{{ essentialData.id }}" id="{{ essentialData.userId }}"
+                                (onAddEnd)="ngOnInit(); activeTabLabel = 'Учетная запись'"></user>
+                        </ng-container>
+                    </mat-tab>
+                </div>
+            </mat-tab-group>
+        </div>
+
+        <div class="col-12 col-md-5 col-lg-4 mat-tab-body-padding" [class.col-xl-3]="!isSidebarOpened">
+            <mat-card class="mb-4 lock-widget" [class.d-none]="essentialData && activeTabLabel === 'Учетная запись'"
+                [class.visible]="lockFormLoaded">
+                <mat-card-header>
+                    <mat-card-title class="m-0">Блокировка</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <lock-form entityType="employee" [entity]="essentialData" (onLoad)="lockFormLoaded = $event"
+                        (onToggle)="essentialData.isLocked = $event"></lock-form>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="log-data mb-4">
+                <mat-card-header>
+                    <mat-card-title class="m-0">Дополнительная информация</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mb-4">
+                    <mat-list role="list" class="p-0 no-mt">
+                        <mat-list-item role="listitem">
+                            <span class="key mr-auto">Автор записи</span>
+                            <span class="value text-right">{{ essentialData.fullName }}</span>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item role="listitem">
+                            <span class="key mr-auto">Дата записи</span>
+                            <span class="value text-right">{{ essentialData.createdAt }}</span>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item role="listitem">
+                            <span class="key mr-auto">Последнее редактирование</span>
+                            <span class="value text-right">{{ essentialData.lastModifiedAt }}</span>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+                <mat-card-actions>
+                    <a [routerLink]="['/log/employees', id]" mat-button color="primary" class="btn-lg btn-block">
+                        История изменений
+                    </a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

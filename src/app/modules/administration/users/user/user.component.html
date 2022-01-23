@@ -1,0 +1,81 @@
+<div *ngIf="!id" [@fade] class="d-flex flex-column justify-content-center">
+    <alert
+        message="У этого сотрудника нет учетной записи и он не имеет доступа к системе."
+        type="info"
+        class="text-center mb-3"
+    ></alert>
+
+    <button mat-flat-button color="primary" (click)="createUser()" class="mx-auto" [disabled]="isRequesting">
+        Создать учетную запись
+    </button>
+</div>
+
+<div class="position-relative" *ngIf="id">
+    <alert
+        *ngIf="isLocked"
+        [@fade]
+        message="Изменение данных невозможно по причине блокировки пользователя."
+        type="info"
+        class="d-block mb-4"
+    ></alert>
+
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Блокировка пользователя</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <alert
+                message="Внимание! После блокировки пользователь потеряет доступ к системе."
+                type="danger"
+                *ngIf="!isLocked"
+            ></alert>
+
+            <lock-form
+                *ngIf="user"
+                horisontal="true"
+                entityType="user"
+                [entity]="user"
+                (onToggle)="isLocked = $event"
+            ></lock-form>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [disabled]="isRequesting">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Права доступа к функционалу</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <functionality-access-permissions
+                id="{{ id }}"
+                (isRequestingFunctionalityAccessPermissions)="isRequesting = $event"
+                [disabled]="isLocked"
+            ></functionality-access-permissions>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Права доступа к данным</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            Ничего нет
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Сброс пароля</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <button mat-flat-button color="primary" (click)="resetPassword()" [disabled]="isRequesting || isLocked">
+                <mat-icon>refresh</mat-icon> Сбросить пароль
+            </button>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Активность пользователя</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            Ничего нет
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

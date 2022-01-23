@@ -1,0 +1,25 @@
+<div class="auth d-flex justify-content-center align-items-center">
+    <div class="container">
+        <mat-card class="mx-auto">
+            <mat-progress-bar
+                mode="indeterminate"
+                *ngIf="isRequesting"
+                class="mat-progress-bar_top rounded-top"
+            ></mat-progress-bar>
+            <mat-card-header class="align-items-center flex-column flex-column-reverse">
+                <img src="../../../assets/img/company-logo.png" alt="" class="company-logo mb-3 mb-md-4 pt-1" />
+                <mat-card-title class="mb-3 mb-md-4 mat-card-title">{{ cardTitle || 'Вход в систему' }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <sign-in
+                    (onResetPassLinkClick)="setForgotPasswordState($event)"
+                    *ngIf="!forgotPassword; else resetPasswordForm"
+                ></sign-in>
+
+                <ng-template #resetPasswordForm>
+                    <reset-password (onResetPassLinkClick)="setForgotPasswordState($event)"> </reset-password>
+                </ng-template>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

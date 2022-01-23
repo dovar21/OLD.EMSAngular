@@ -1,0 +1,90 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isRequesting" class="mat-progress-bar_top"></mat-progress-bar>
+<h1 class="text-center" mat-dialog-title>
+    {{ form.get('fullName').value ? form.get('fullName').value : modalAction }}
+</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div mat-dialog-content>
+        <div class="form-row">
+            <div class="col-12 col-lg-6">
+                <div *ngIf="croppingMode" class="mb-4">
+                    <cropper-image (onSubmitCrop)="onSubmitCrop($event)"
+                                   [src]="preview"
+                                   [isAvatar]="true">
+                    </cropper-image>
+                </div>
+
+                <div *ngIf="!croppingMode">
+                    <img src="{{ image ? image : '../../../../../../assets/img/noavatar.jpg' }}"
+                         alt="Фото контакта" class="photo-preview rounded w-100 object-cover mb-4" />
+                </div>
+
+                <div class="mb-3">
+                    <button mat-button *ngIf="!croppingMode" class="file-input-button w-100" type="button">
+                        <input type="file"
+                               accept="image/jpg,image/jpeg"
+                               (change)="uploadFile($event.target)"
+                               class="cursor-pointer" />
+                        Кликните для выбора фото
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 d-flex flex-column">
+                <mat-form-field appearance="outline">
+                    <mat-label>ФИО</mat-label>
+                    <input matInput placeholder="ФИО" formControlName="fullName" />
+                    <mat-error *ngIf="form.get('fullName').errors?.required">ФИО обязательно</mat-error>
+                    <mat-error *ngIf="form.get('fullName').errors?.duplicateTitle">{{ validationErrors[1005] }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Страна</mat-label>
+                    <mat-select formControlName="countryName" required>
+                        <mat-option *ngFor="let country of countries" [value]="country.name">
+                            {{ country.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('countryName').errors?.required">Выберите страну</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Отдел/Должность</mat-label>
+                    <input matInput placeholder="Отдел/Должность" formControlName="positionName" />
+                    <mat-error *ngIf="form.get('positionName').errors?.required">Отдел/Должность обязательно</mat-error>
+                    <mat-error *ngIf="form.get('positionName').errors?.duplicateTitle">{{ validationErrors[1005] }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Контакты</mat-label>
+                    <input matInput placeholder="Контакты" formControlName="contacts" />
+                    <mat-error *ngIf="form.get('contacts').errors?.required">Контакт обязательно</mat-error>
+                    <mat-error *ngIf="form.get('contacts').errors?.duplicateTitle">{{ validationErrors[1005] }}</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <!--<ckeditor [editor]="Editor" [config]="editorConfig" (change)="setBody($event)"></ckeditor> -->
+        <mat-form-field appearance="outline">
+            <mat-label>Краткое описание</mat-label>
+            <textarea matInput
+                      placeholder="Краткое описание"
+                      formControlName="description"
+                      matTextareaAutosize
+                      matAutosizeMinRows="4"
+                      maxlength="256">
+            </textarea>
+            <mat-error *ngIf="form.get('description').errors?.required">Описание обязателено</mat-error>
+        </mat-form-field>
+
+        <div class="d-flex justify-content-end">
+            <button mat-button type="button" class="mat-button-secondary mr-3" (click)="dialogRef.close()"
+                [disabled]="isRequesting">Отменить
+            </button>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="isRequesting">
+                <mat-icon>save</mat-icon> Сохранить
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,48 @@
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between flex-column flex-lg-row px-4 px-lg-0 mr-0">
+        <div class="w-100 mx-lg-4 mb-4" [@fade]>
+            <h1 class="mb-4">{{ title }}</h1>
+
+            <infinite-scroll (scrolled)="loadMore()" *ngIf="posts.length > 0" [@fade]>
+                <article-card *ngFor="let post of posts"
+                              [data]="post"
+                              [controllerName]="controllerName"
+                              (onCreateUpdateDialogOpen)="openCreateUpdateDialog($event)">
+                </article-card>
+
+                <button *ngIf="posts.length && !totalCountReached"
+                        mat-button
+                        class="mb-3 w-100"
+                        type="button"
+                        (click)="setPaginationQueryParams()"
+                        [disabled]="isRequesting">
+                    Загрузить еще
+                </button>
+
+                <span class="w-100 text-center d-block text-muted" *ngIf="totalCountReached">Больше ничего нет</span>
+            </infinite-scroll>
+        </div>
+
+            <right-sidebar>
+                <perfect-scrollbar [config]="perfectScrollBarConfig">
+                    <information-filter (onFilter)="setFilterQueryParams($event)"
+                                        (onResetFilter)="resetFilter()"
+                                        [controllerName]="controllerName + 'Categories'"
+                    ></information-filter>
+                </perfect-scrollbar>
+            </right-sidebar>
+    </div>
+</div>
+
+<scroll-to-top bottom="100px"></scroll-to-top>
+
+<floating-fab *ngIf="permissions['News.Create'] && controllerName === 'News'"
+              link="/information/news/create"
+              tooltipPosition="left">
+</floating-fab>
+
+<floating-fab *ngIf="(controllerName === 'UsefulLinks' && permissions['UsefulLinks.Create']) ||
+                     (controllerName === 'File' && permissions['Files.Create'])"
+              (click)="openCreateUpdateDialog()"
+              tooltipPosition="left">
+</floating-fab>

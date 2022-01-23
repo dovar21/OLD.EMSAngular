@@ -1,0 +1,18 @@
+<div class="grid-container">
+    <product-images-card [product]="product" class="Images"></product-images-card>
+    <product-properties-card [product]="product"
+                             [groupForm]="groupForm"
+                             [payload]="payload"
+                             class="Properties">
+    </product-properties-card>
+    <product-implementation-card [product]="product"
+                                 [groupForm]="groupForm"
+                                 [payload]="payload"
+                                 class="Sell">
+    </product-implementation-card>
+    <product-description-card [product]="product"
+                              [groupForm]="groupForm"
+                              [payload]="payload"
+                              class="Description">
+    </product-description-card>
+</div>

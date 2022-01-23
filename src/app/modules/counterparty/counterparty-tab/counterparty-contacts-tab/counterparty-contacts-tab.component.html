@@ -1,0 +1,61 @@
+<div *ngIf="counterpartContacts && counterpartContacts.length > 0" class="row">
+    <div *ngFor="let counterpartContact of counterpartContacts" class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <mat-card class="interested-employee position-relative text-center">
+            <img (click)="openDialogContactView(counterpartContact)"
+                 [src]="counterpartContact.photoPathSmall"
+                 [alt]="counterpartContact.fullName"
+                 class="photo cursor-pointer rounded-circle object-cover mb-4">
+
+            <button mat-mini-fab class="mat-fab-basic-secondary mat-fab-basic edit-button position-absolute"
+                    matTooltip="Редактировать данные"
+                    matTooltipPosition="above"
+                    (click)="openDialogCreateUpdate(counterpartContact)">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-mini-fab class="mat-fab-basic-secondary mat-fab-basic delete-button position-absolute"
+                    matTooltip="Отвязать"
+                    matTooltipPosition="above"
+                    (click)="confirmModal.open(counterpartContact)">
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            <h5 (click)="openDialogContactView(counterpartContact)"
+                class="cursor-pointer counter-fullname">
+                {{ (counterpartContact.fullName.length > 20) ? (counterpartContact.fullName | slice : 0:20) + '...' : (counterpartContact.fullName) }}
+            </h5>
+            <div class="mb-3">
+                <span class="text-muted d-block counter-position">
+                    {{ counterpartContact.countryName }} •
+                    {{ (counterpartContact.positionName.length > 14) ? (counterpartContact.positionName | slice : 0:14) + '...' : (counterpartContact.positionName) }}
+                </span>
+            </div>
+
+            <div class="wrap-divider">
+                <mat-divider></mat-divider>
+            </div>
+
+            <span class="text-muted d-block counter-contacts d-block my-3">
+                {{ (counterpartContact.contacts.length > 48) ? (counterpartContact.contacts | slice : 0:48) + '...' : (counterpartContact.contacts) }}
+            </span>
+
+            <div class="wrap-divider mb-3">
+                <mat-divider></mat-divider>
+            </div>
+
+            <p class="text-muted counter-description">
+                {{ (counterpartContact.description.length > 48) ? (counterpartContact.description | slice : 0:48) + '...' : (counterpartContact.description) }}
+            </p>
+        </mat-card>
+
+        <confirm-modal #confirmModal
+                       confirmText="Вы действительно хотите удалить из списка контактов?"
+                       (onConfirm)="untieCounterpartContact(counterpartContact)">
+        </confirm-modal>
+
+    </div>
+</div>
+<p class="text-center text-muted"
+   *ngIf="(counterpartContacts && counterpartContacts.length === 0) || !counterpartContacts">У контрагента нет
+    контактов</p>
+<floating-fab (click)="openDialogCreateUpdate()" title="Добавить товар" icon="add"></floating-fab>

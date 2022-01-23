@@ -1,0 +1,32 @@
+<mat-card class="product">
+    <a [routerLink]="['/counterparties', data.id]"
+        class="img-link mb-4 d-flex align-items-center justify-content-center">
+        <img src="{{ data.imagePathSmall }}" alt="{{ data.name }}" class="img" />
+    </a>
+
+    <mat-card-title class="mb-2">
+        <a [routerLink]="['/counterparties', data.id]" class="title-link">
+            <h2 class="title m-0 text-center w-100">
+                {{ (data.name.length > 13)? (data.name | slice : 0:13) + '...' : (data.name) }}
+            </h2>
+        </a>
+    </mat-card-title>
+    <span class="text-center text-muted mb-4 d-block w-100">{{ data.countryName }} • Поставщик</span>
+    <div class="divider-wrap mb-4">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content class="mb-4">
+        <p class="description text-center text-muted"
+           title="{{ data.description }}"
+           [innerHtml]="(data.description.length > 45) ? (data.description | slice : 0:45) + '...' : (data.description)">
+        </p>
+    </mat-card-content>
+
+    <mat-card-actions class="d-flex justify-content-between align-items-center">
+        <span class="price font-weight-bold">{{ data.balance }} <span class="text-muted">TJS</span></span>
+        <button mat-button [routerLink]="['/counterparty', data.id]" type="button"
+            class="m-0 more-btn mat-button-sm d-none d-sm-block w-auto">
+            Подробнее
+        </button>
+    </mat-card-actions>
+</mat-card>

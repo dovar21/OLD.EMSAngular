@@ -1,0 +1,50 @@
+<form
+    [formGroup]="form"
+    (ngSubmit)="filter()"
+    #submitForm="ngForm"
+    class="form-row mb-4 mb-md-0 align-items-sm-baseline flex-lg-column"
+>
+    <div class="col-12 col-sm-4 col-md-3 col-lg-12">
+        <mat-form-field appearance="outline">
+            <mat-label>Сообщения с</mat-label>
+            <input
+                matInput
+                placeholder="04.08.2019"
+                [matDatepicker]="fromDate"
+                formControlName="fromDate"
+                [max]="maxDate"
+                (dateInput)="minDate = $event.target.value"
+                (dateChange)="minDate = $event.target.value"
+            />
+            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+            <mat-datepicker #fromDate></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12 col-sm-4 col-md-3 col-lg-12">
+        <mat-form-field appearance="outline">
+            <mat-label>Сообщения по</mat-label>
+            <input
+                matInput
+                placeholder="04.08.2019"
+                [matDatepicker]="toDate"
+                formControlName="toDate"
+                [max]="maxDate"
+                [min]="minDate"
+            />
+            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+            <mat-datepicker #toDate></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <div class="col-6 col-sm-4 col-md-3 col-lg-12">
+        <button mat-flat-button class="w-100 mb-lg-3" color="accent" type="submit">
+            <mat-icon>filter_list</mat-icon> Фильтровать
+        </button>
+    </div>
+    <div class="col-6 col-sm-12 col-md-3 col-lg-12">
+        <button mat-button type="button" class="w-100" (click)="resetFilter()">
+            Сбросить
+        </button>
+    </div>
+</form>

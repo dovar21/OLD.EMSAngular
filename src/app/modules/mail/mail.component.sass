@@ -1,0 +1,29 @@
+@import '../../../sass/vars'
+@import '../../../sass/_mixins/media'
+
+.vertical-navlist
+    .mat-icon
+        font-size: 21px
+    
+    .link
+        border-bottom: 0
+        color: $grey
+        transition: color .2s
+
+        &:hover,
+        &.active
+            color: $purple
+    
+    .mat-list-item
+        height: 40px
+        +respond-to(laptop)
+            width: auto
+
+.sidebar
+    width: 200px
+    +respond-to(tablet)
+        width: 100%
+
+.messages
+    box-shadow: $shadow
+    height: calc(100vh - 70px - 60px)

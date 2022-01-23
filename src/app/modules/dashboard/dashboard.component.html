@@ -1,0 +1,79 @@
+<main class="container-fluid">
+    <!--<div class="draggable-grid row">
+       <div class="item draggable-grid-2" *ngFor="let item of widgets.counter">
+           <counter-widget [data]="item" [@fade]></counter-widget>
+       </div>
+    </div>-->
+
+    <!--<div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="row">
+                <div class="col-6 col-lg-4 mb-4 mb-lg-0" *ngFor="let item of widgets.counter">
+                    <counter-widget [data]="item" [@fade]></counter-widget>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+            <last-news-widget [data]="widgets.lastNews"></last-news-widget>
+        </div>
+        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+            <last-employees-widget [data]="widgets.lastEmployees"></last-employees-widget>
+        </div>
+    </div>-->
+
+    <!--<div class="card-columns">
+        <div class="card">
+            <div class="row">
+                <div class="col-6 col-lg-4 mb-4 mb-lg-0" *ngFor="let item of widgets.counter">
+                    <counter-widget [data]="item" [@fade]></counter-widget>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <last-employees-widget [data]="widgets.lastEmployees"></last-employees-widget>
+        </div>
+
+        <div class="card">
+            <last-news-widget [data]="widgets.lastNews"></last-news-widget>
+        </div>
+    </div>-->
+
+    <!--<div class="grid-container">
+       <div class="last-employees-widget"
+           ><last-employees-widget [data]="widgets.lastEmployees"></last-employees-widget
+       ></div>
+       <div class="last-news-widget"><last-news-widget [data]="widgets.lastNews"></last-news-widget></div>
+       <div class="count-widget-2"><counter-widget [data]="widgets.counter[1]" [@fade]></counter-widget></div>
+       <div class="count-widget"><counter-widget [data]="widgets.counter[0]" [@fade]></counter-widget></div>
+       <div class="count-widget-3"><counter-widget [data]="widgets.counter[2]" [@fade]></counter-widget></div>
+    </div> -->
+
+    <!--<highcharts-line [title]="'СТАТИСТИКА ПО СДЕЛКАМ'" [subtitle]="'За текущий месяц'"></highcharts-line>-->
+    <!--<highcharts-area [title]="'Расходы'" [color]="'#533DFE'"></highcharts-area>-->
+    <!--<highcharts-pie [title]="'ПРОДАВАЕМЫЕ ТОВАРЫ'"
+                    [description]="'Доля популярных товаров в общей массе'">
+    </highcharts-pie>-->
+
+    <div class="grid-container">
+        <div class="count-widget" *ngIf="widgets.counter[0]" [@fade]>
+            <counter-widget [data]="widgets.counter[0]"></counter-widget>
+        </div>
+
+        <div class="count-widget-2" *ngIf="widgets.counter[1]" [@fade]>
+            <counter-widget [data]="widgets.counter[1]"></counter-widget>
+        </div>
+
+        <div class="count-widget-3" *ngIf="widgets.counter[2]" [@fade]>
+            <counter-widget [data]="widgets.counter[2]"></counter-widget>
+        </div>
+
+        <div class="last-news-widget" *ngIf="widgets.lastNews" [@fade]>
+            <last-news-widget [data]="widgets.lastNews"></last-news-widget>
+        </div>
+
+        <div class="last-employees-widget" *ngIf="widgets.lastEmployees" [@fade]>
+            <last-employees-widget [data]="widgets.lastEmployees"></last-employees-widget>
+        </div>
+    </div>
+</main>

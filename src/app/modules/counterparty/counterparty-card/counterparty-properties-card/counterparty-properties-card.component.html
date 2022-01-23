@@ -1,0 +1,77 @@
+<mat-card>
+    <form [formGroup]="groupForm">
+        <mat-list role="list" class="p-0 no-mt mb-3">
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Юридическое имя</span>
+                <span class="value w-100">
+                    <input matInput
+                           placeholder="Юридическое имя"
+                           class="w-100 text-right text-muted"
+                           formControlName="legalName"
+                           (blur)="onBlurMethod('legalName')"/>
+                    <mat-error *ngIf="groupForm.get('legalName').dirty &&
+                                      groupForm.get('legalName').errors?.required">
+                        Юридическое имя обязателено
+                    </mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+
+            <mat-list-item class="p-0 no-mt no-mb">
+                <span class="w-100">Головной офис</span>
+                <span class="w-100 text-right text-muted">
+                    {{ counterparty.headOffice ? counterparty.headOffice.address : 'не указан' }}
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">ИНН</span>
+                <span class="value">
+                    <input matInput
+                           type="text"
+                           class="w-100 text-right text-muted"
+                           placeholder="Не задано"
+                           formControlName="itn"
+                           (blur)="onBlurMethod('itn')"/>
+                    <mat-error *ngIf="groupForm.get('itn').errors?.required">ИНН обязателено</mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Веб-сайт</span>
+                <span class="value">
+                    <input type="url"
+                           matInput
+                           class="w-100 text-right text-muted"
+                           placeholder="Веб-сайт"
+                           formControlName="website"
+                           (blur)="onBlurMethod('website')" />
+                    <mat-error *ngIf="groupForm.get('website').errors?.required">Веб-сайт обязателено</mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </mat-list>
+        <div class="d-flex flex-column">
+            <div class="w-100">
+                <span class="key d-block mb-2">Дополнительное описание</span>
+                <div (click)="focusIn()" class="text-muted">
+                    <div *ngIf="isEditMode">
+                        <ckeditor [editor]="Editor"
+                                  [config]="editorConfig"
+                                  (focusout)="focusOut()"
+                                  formControlName="description">
+                        </ckeditor>
+                    </div>
+                    <div *ngIf="!isEditMode">
+                        <div [innerHtml]="counterparty.description ? counterparty.description : 'Нет данных'"></div>
+                    </div>
+                </div>
+                <mat-error *ngIf="groupForm.get('description').errors?.required">
+                    Дополнительное описание обязателено
+                </mat-error>
+            </div>
+        </div>
+    </form>
+</mat-card>

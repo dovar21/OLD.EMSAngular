@@ -1,0 +1,68 @@
+<div (click)="getEmployeesForAutocomplete()">
+    <form [formGroup]="form">
+        <mat-form-field appearance="outline">
+            <input type="text"
+                    placeholder="Начните вводить имя сотрудника для добавления его в список"
+                    matInput
+                    formControlName="employee"
+                    [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete"
+                                [displayWith]="autocompleteDisplayFn"
+                                (optionSelected)="employeeSelect()">
+                <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
+                    <img [src]="employee.photo" [alt]="employee.photo" class="rounded-circle"> {{ employee.fullName }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>
+
+<div *ngIf="productIdAndInterestedEmployees.interestedEmployees && productIdAndInterestedEmployees.interestedEmployees.length > 0" class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let interestedEmployee of productIdAndInterestedEmployees.interestedEmployees">
+        <mat-card class="interested-employee position-relative text-center">
+            <img [src]="interestedEmployee.photo" [alt]="interestedEmployee.fullName" class="photo rounded-circle object-cover mb-4">
+
+            <button mat-mini-fab
+                    class="mat-fab-basic mat-fab-secondary unlink-btn position-absolute"
+                    matTooltip="Отвязать"
+                    matTooltipPosition="above"
+                    (click)="confirmModal.open(interestedEmployee)">
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            <h5 class="fullname mx-auto">{{ interestedEmployee.fullName }}</h5>
+            <span class="position text-muted">{{ interestedEmployee.department }}</span>
+
+            <mat-divider class="d-block my-4"></mat-divider>
+
+            <mat-slide-toggle [checked]="interestedEmployee.notifyByEmail"
+                                (change)="toggleInterestedEmployee($event, interestedEmployee, 'Email')"
+                                labelPosition="before"
+                                color="primary"
+                                class="mb-3">
+                Уведомлять по Email
+            </mat-slide-toggle>
+
+            <mat-slide-toggle [checked]="interestedEmployee.notifyBySMS"
+                              (change)="toggleInterestedEmployee($event, interestedEmployee, 'SMS')"
+                              labelPosition="before"
+                              color="primary">
+                Уведомлять по SMS
+            </mat-slide-toggle>
+        </mat-card>
+
+        <confirm-modal #confirmModal
+                       [modalTitle]="interestedEmployee.fullName"
+                       confirmText="Вы действительно хотите удалить сотрудника из списка заинтересованных лиц?"
+                       (onConfirm)="untieEmployee(interestedEmployee)">
+        </confirm-modal>
+    </div>
+</div>
+<p class="text-center text-muted"
+   *ngIf="(productIdAndInterestedEmployees.interestedEmployees &&
+           productIdAndInterestedEmployees.interestedEmployees.length === 0) ||
+           !productIdAndInterestedEmployees.interestedEmployees">
+    У этого товара нет заинтересованных лиц
+</p>
+

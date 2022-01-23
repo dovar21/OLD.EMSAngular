@@ -1,0 +1,8 @@
+<div *ngIf="selectFilterCatteries.length > 0">
+    <span *ngFor="let selectFilterCattery of selectFilterCatteries">
+        <span style="margin-left: 25px" matTooltip="{{ selectFilterCattery.valueType }}" matTooltipPosition="above">
+            {{ selectFilterCattery.valueName }}
+            <span (click)="removeValue(selectFilterCattery)">(удалть)</span>
+        </span>
+    </span>
+</div>

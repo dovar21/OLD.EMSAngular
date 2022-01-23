@@ -1,0 +1,69 @@
+<div class="post">
+    <mat-card class="p-0">
+        <div class="product-image-view rounded d-flex justify-content-between position-relative">
+            <div *ngIf="selectImageForEdit && selectImageForEdit.image; else elseBlock"
+                class="product-image-view full-image-view d-flex justify-content-between position-relative">
+                <div class="list-image-view list-unstyled mb-0 d-flex flex-column align-items-center position-relative">
+                    <div #movingElement class="movingContent" *ngIf="product.images.length > 0"
+                        [ngStyle]="{'transform': 'translateY(' + translate + 'px)'}">
+                        <div *ngFor="let productImage of product.images;" class="image-list">
+                            <img src="{{ productImage.image }}" alt="'image'"
+                                [ngClass]="{ 'avatar__active': selectImageForEdit.id == productImage.id}"
+                                class="avatar object-cover" (click)="selectImage(productImage)" />
+                        </div>
+                    </div>
+                    <ng-container *ngIf="product.images.length > 4">
+                        <mat-icon (click)="prevImage()" [ngClass]="{'disable': !translate}"
+                            class="material-icons position-absolute w-100 text-center arrow-top">
+                            keyboard_arrow_up
+                        </mat-icon>
+
+                        <mat-icon (click)="nextImage()" [ngClass]="{'disable': disableButton }"
+                            class="material-icons position-absolute w-100 text-center arrow-bottom">
+                            keyboard_arrow_down
+                        </mat-icon>
+                    </ng-container>
+                </div>
+                <div class="full-image-view">
+                    <img *ngIf="selectImageForEdit && selectImageForEdit.image; else elseBlock"
+                        src="{{selectImageForEdit.image}}" alt="'defaultSelected'"
+                        class="avatar-full object-cover m-0 align-self-center">
+                </div>
+
+                <div class="buttons position-absolute">
+                    <button mat-mini-fab class="mat-fab-basic m-0 d-block" [matMenuTriggerFor]="actions">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #actions="matMenu">
+                        <button mat-menu-item
+                            *ngIf="selectImageForEdit"
+                            (click)="openDialogUpdate()">
+                            <mat-icon>edit</mat-icon> Редактировать
+                    </button>
+                    <button mat-menu-item color="warn"
+                            *ngIf="selectImageForEdit"
+                            (click)="confirmModal.open()">
+                        <mat-icon>delete</mat-icon> Удалить
+                        </button>
+                        <button mat-menu-item (click)="openDialogCreate()">
+                            <mat-icon>cloud_download</mat-icon> Загрузить еще
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+            <ng-template #elseBlock>
+                <div class="h-100 w-100 text-muted d-flex flex-column align-items-center justify-content-center">
+                    <span class="mb-4">
+                        Нет фото
+                    </span>
+                    <button  (click)="openDialogCreate()" class="mat-button file-input-button" mat-button type="button">Загрузить фото</button>
+                </div>
+            </ng-template>
+        </div>
+    </mat-card>
+</div>
+
+<confirm-modal #confirmModal
+               confirmText="Вы действительно хотите удалить это фото?"
+               (onConfirm)="removeImage()">
+</confirm-modal>

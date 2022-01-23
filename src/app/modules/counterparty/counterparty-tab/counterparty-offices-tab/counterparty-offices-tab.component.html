@@ -1,0 +1,44 @@
+<div *ngIf="counterpartOffices && counterpartOffices.length > 0" class="row">
+    <div *ngFor="let counterpartOffice of counterpartOffices" class="col-12 col-sm-6 col-md-4">
+        <mat-card class="interested-counterparie position-relative text-left">
+            <div *ngIf="counterpartOffice.isPrimary"
+                 matTooltip="Головной офис"
+                 matTooltipPosition="above"
+                 class="badge-primary"></div>
+            <button mat-mini-fab
+                    class="mat-fab-basic-secondary mat-fab-basic edit-button position-absolute"
+                    matTooltip="Редактировать данные" matTooltipPosition="above"
+                    (click)="openDialogCreateUpdate(counterpartOffice)">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-mini-fab
+                    class="mat-fab-basic-secondary mat-fab-basic delete-button position-absolute"
+                    matTooltip="Отвязать" matTooltipPosition="above"
+                    (click)="confirmModal.open(counterpartOffice)">
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            <h5 (click)="openDialogContactView(counterpartOffice)" class="cursor-pointer">
+                {{ counterpartOffice.countryName }}
+            </h5>
+            <span (click)="openDialogContactView(counterpartOffice)" class="position cursor-pointer d-block my-3">
+                {{ counterpartOffice.address }}
+            </span>
+            <mat-divider></mat-divider>
+            <span class="d-block my-3 counter-contacts">
+                {{ (counterpartOffice.contacts.length > 96) ? (counterpartOffice.contacts| slice : 0:96) + '...' : (counterpartOffice.contacts) }}
+            </span>
+            <mat-divider></mat-divider>
+            <p class="mt-3 counter-description">
+                {{ (counterpartOffice.description.length > 96) ? (counterpartOffice.description| slice : 0:96) + '...' : (counterpartOffice.description) }}
+            </p>
+        </mat-card>
+        <confirm-modal #confirmModal confirmText="Вы действительно хотите удалить из списка оффисов?"
+            (onConfirm)="untieCounterpartContact(counterpartOffice)">
+        </confirm-modal>
+    </div>
+</div>
+<p class="text-center text-muted"
+    *ngIf="(counterpartOffices && counterpartOffices.length === 0) || !counterpartOffices">У контрагента нет оффисов</p>
+<floating-fab (click)="openDialogCreateUpdate()" title="Добавление офиса" icon="add"></floating-fab>

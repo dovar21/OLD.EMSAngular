@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-between mb-4">
+    <mini-profile [data]="message.user" maxWidth="100%"></mini-profile>
+
+    <div class="d-flex flex-column align-items-end">
+        <small class="text-muted">{{ message.createdAt }}</small>
+        <a href="#" (click)="print($event)" class="link d-print-none"> <mat-icon>print</mat-icon> Распечатать </a>
+    </div>
+</div>
+
+<perfect-scrollbar style="height: calc(100% - 35px)">
+    <h4>{{ message.title }}</h4>
+
+    <div [innerHtml]="message.body" class="messgae-body"></div>
+</perfect-scrollbar>

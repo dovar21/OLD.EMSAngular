@@ -1,0 +1,32 @@
+<button
+    class="mini-profile bg-transparent border-0 p-0 text-left"
+    [class.small]="config.small"
+    [routerLink]="['/administration/employees', data?.employeeId]"
+>
+    <div class="d-flex align-items-center">
+        <img
+            src="{{ data?.photoPath ? data?.photoPath : '../../../../assets/img/noavatar.jpg' }}"
+            alt="{{ data?.fullName }}"
+            title="{{ data?.fullName }}"
+            class="avatar rounded-circle mr-2"
+            [class.mr-lg-3]="!config.small"
+        />
+        <div class="d-flex flex-column">
+            <span
+                *ngIf="!config.hideFullName"
+                class="full-name text-truncate"
+                title="{{ data?.fullName }}"
+                [ngStyle]="{ 'max-width': config.maxWidth }"
+                >{{ data?.fullName }}</span
+            >
+            <span
+                *ngIf="!config.hidePosition"
+                class="position text-truncate"
+                title="{{ data?.positionName }}"
+                [ngStyle]="{ 'max-width': config.maxWidth }"
+            >
+                {{ data?.positionName }}
+            </span>
+        </div>
+    </div>
+</button>

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <h1 class="mb-4" [@fade]>{{ title }} </h1>
+
+    <mat-tab-group class="mb-3" [class.vertical]="!isSmallScreen" animationDuration="0ms">
+        <mat-tab label="Почта (SMTP)">
+            <smtp-settings></smtp-settings>
+        </mat-tab>
+
+        <mat-tab label="SMS (SMPP)">
+            <smpp-settings></smpp-settings>
+        </mat-tab>
+    </mat-tab-group>
+</div>

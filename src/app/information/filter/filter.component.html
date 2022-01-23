@@ -1,0 +1,76 @@
+<mat-card class="mb-5" [@fade]>
+    <mat-card-header>
+        <mat-card-title class="m-0">Фильтр</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="mb-0">
+        <form [formGroup]="form" (ngSubmit)="filter()" #filterForm="ngForm">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Название</mat-label>
+                <input matInput formControlName="title" placeholder="Название" type="text" />
+                <mat-icon color="primary" matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Записи с</mat-label>
+                <input matInput placeholder="15.09.1993" [matDatepicker]="fromDate" formControlName="fromDate" />
+                <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                <mat-datepicker #fromDate></mat-datepicker>
+
+                <mat-error *ngIf="form.get('fromDate').errors?.matDatepickerParse">
+                    Введите дату в формате ДД.ММ.ГГГГ
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Записи по</mat-label>
+                <input matInput placeholder="15.09.1993" [matDatepicker]="toDate" formControlName="toDate" />
+                <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                <mat-datepicker #toDate></mat-datepicker>
+
+                <mat-error *ngIf="form.get('toDate').errors?.matDatepickerParse">
+                    Введите дату в формате ДД.ММ.ГГГГ
+                </mat-error>
+            </mat-form-field>
+
+            <mat-slide-toggle labelPosition="before"
+                              class="mb-3"
+                              color="primary"
+                              checked
+                              formControlName="onlyActive"
+                              *ngIf="(controllerName === 'News' &&
+                                        (permissions['News.Create'] || permissions['News.Update'])) ||
+                                     (controllerName === 'UsefulLink' &&
+                                        (permissions['UsefulLinks.Create'] || permissions['UsefulLinks.Edit'])) ||
+                                     (controllerName === 'FileArchive' &&
+                                     (permissions['FileArchive.Create'] || permissions['FileArchive.Edit']))">
+                Только активные
+            </mat-slide-toggle>
+
+            <button mat-flat-button
+                    color="primary"
+                    type="submit"
+                    class="btn-lg btn-block mb-3"
+                    [disabled]="isRequesting">
+                Найти
+            </button>
+            <button mat-flat-button
+                    mat-button
+                    type="button"
+                    class="btn-lg btn-block m-0"
+                    (click)="reset()"
+                    [disabled]="isRequesting">
+                Сбросить
+            </button>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="p-0" *ngIf="categories" [@fade]>
+    <mat-card-header>
+        <mat-card-title class="m-0">Категории</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="mb-0">
+        <toggle-list [items]="categories" dataType="categories" (onSelect)="filterByCategory($event)"></toggle-list>
+    </mat-card-content>
+</mat-card>

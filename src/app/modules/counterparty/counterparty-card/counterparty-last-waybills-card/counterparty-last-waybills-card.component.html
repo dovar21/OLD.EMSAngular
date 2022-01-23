@@ -1,0 +1,37 @@
+<mat-card>
+    <mat-card-header class="justify-content-between align-items-center mb-4">
+        <mat-card-title class="mb-0 mr-3">Последние накладные</mat-card-title>
+        <a [routerLink]="['/counterparties', counterparty.id]"
+           [queryParams]="{ tabs: 'stocks' }"
+           class="m-0 text-muted">
+            Все накладные <mat-icon class="align-middle">arrow_forward</mat-icon>
+        </a>
+    </mat-card-header>
+
+    <div *ngIf="counterparty.waybills && counterparty.waybills.length > 0">
+        <div *ngFor="let waybill of counterparty.waybills; let last = last">
+            <div class="w-100 mb-2 d-flex justify-content-between">
+                <div>
+                    <div class="key text-left">№{{ waybill.id }}<span
+                            class="dot-indicator income align-top">&bull;</span></div>
+                    <span class="text-left mr-3 text-muted">
+                        <mat-icon class="align-middle value">date_range</mat-icon> {{ waybill.createdAt }}
+                    </span>
+                    <span class="text-left text-muted">
+                        <mat-icon class="align-middle value">folder</mat-icon> {{ waybill.typeName }}
+                    </span>
+                </div>
+                <div>
+                    <span class="key font-weight-bold">{{ waybill.totalSum }}</span>
+                    <span class="text-muted font-weight-bold"> {{ waybill.currencyName }}</span>
+                </div>
+            </div>
+            <mat-divider *ngIf="!last" class="mb-4"></mat-divider>
+        </div>
+        <!-- <div class="value text-left">Typed id {{ waybill.typeId }}</div> -->
+    </div>
+
+    <div *ngIf="!counterparty.waybills?.length">
+        <p>Нет данных</p>
+    </div>
+</mat-card>

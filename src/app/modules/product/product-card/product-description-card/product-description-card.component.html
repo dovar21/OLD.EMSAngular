@@ -1,0 +1,21 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="m-0">Описание</mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="groupForm">
+        <div (click)="focusIn()">
+            <div *ngIf="isEditMode">
+                <ckeditor [editor]="Editor"
+                          [config]="editorConfig"
+                          (focusout)="focusOut()"
+                          formControlName="description">
+                </ckeditor>
+            </div>
+            <div *ngIf="!isEditMode">
+                <div *ngIf="product.description" [innerHtml]="product.description"></div>
+                <div *ngIf="!product.description">Нет данных</div>
+            </div>
+        </div>
+    </form>
+</mat-card>

@@ -1,0 +1,37 @@
+<mat-card class="product">
+    <a [routerLink]="['/products', data.id]" class="img-link d-block">
+        <img src="{{ data.image }}"
+             alt="{{ data.title }}"
+             class="w-100 img rounded-top"/>
+        <mat-divider></mat-divider>
+    </a>
+
+    <mat-card-header>
+        <mat-card-title class="m-0">
+            <a [routerLink]="['/products', data.id]" class="title-link">
+                <h2 class="title m-0">
+                    {{ (data.title.length > 13)? (data.title | slice : 0:13) + '...' : (data.title) }}
+                </h2>
+            </a>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="mb-4">
+        <p *ngIf="data.shortDescription" class="description text-muted" title="{{ data.shortDescription }}">
+            {{ (data.shortDescription.length > 45) ? (data.shortDescription | slice : 0:45) + '...' : (data.shortDescription) }}
+        </p>
+        <p *ngIf="!data.shortDescription" class="description text-muted" title="{{ data.shortDescription }}">
+            Данные не указаны
+        </p>
+    </mat-card-content>
+    
+    <mat-card-actions class="d-flex justify-content-between align-items-center">
+        <span class="price font-weight-bold">{{ data.wholesalePrice }} <span class="text-muted">TJS</span></span>
+        <button mat-button
+                [routerLink]="['/products', data.id]"
+                type="button"
+                class="m-0 more-btn mat-button-sm d-none d-sm-block w-auto">
+            Подробнее
+        </button>
+    </mat-card-actions>
+</mat-card>

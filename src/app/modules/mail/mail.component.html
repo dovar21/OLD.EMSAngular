@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="d-flex flex-column flex-lg-row">
+        <div class="sidebar mr-lg-4">
+            <h1 class="mb-lg-4 d-print-none">{{ title }}</h1>
+
+            <button
+                mat-flat-button
+                color="primary"
+                class="w-100 mb-3 d-none d-lg-block d-print-none"
+                (click)="openCreateDialog()"
+                [disabled]="isRequesting"
+            >
+                <mat-icon>send</mat-icon> Написать
+            </button>
+
+            <mat-list class="vertical-navlist d-print-none mb-3 d-flex d-lg-block">
+                <mat-list-item *ngFor="let link of navigationLinks" class="mr-4 mr-lg-0">
+                    <a
+                        matLine
+                        routerLink="/messages/{{ link.path }}"
+                        class="link align-items-center d-flex py-2 rounded"
+                        [class.active]="link.path === messagesType"
+                    >
+                        <mat-icon class="mr-3">{{ link.icon }}</mat-icon> {{ link.title }}
+                    </a>
+                </mat-list-item>
+            </mat-list>
+
+            <mat-divider class="mb-4 d-print-none"></mat-divider>
+
+            <messages-filter
+                class="d-print-none"
+                (onFilter)="fetchCriterias = $event"
+                (onResetFilter)="fetchCriterias = $event"
+            ></messages-filter>
+        </div>
+
+        <div class="messages w-100">
+            <perfect-scrollbar [config]="perfectScrollbarConfig">
+                <messages [messagesType]="messagesType" [fetchCriterias]="fetchCriterias"></messages>
+            </perfect-scrollbar>
+        </div>
+    </div>
+</div>
+
+<floating-fab
+    (click)="openCreateDialog()"
+    icon="send"
+    title="Отправить сообщение"
+    class="d-lg-none d-print-none"
+></floating-fab>

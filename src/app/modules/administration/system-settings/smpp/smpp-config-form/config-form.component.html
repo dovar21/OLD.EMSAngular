@@ -1,0 +1,251 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Имя провайдера</mat-label>
+                <input matInput placeholder="Имя провайдера" formControlName="providerName"
+                    (input)="onProviderNameChange.emit($event.target.value)" />
+
+                <mat-error *ngIf="form.get('providerName').errors?.required">Имя провайдера обязательно</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Хост</mat-label>
+                <input matInput placeholder="Хост" formControlName="hostName" />
+
+                <mat-error *ngIf="form.get('hostName').errors?.required">Хост обязателен</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Порт</mat-label>
+                <input matInput placeholder="Порт" formControlName="portNumber" />
+
+                <mat-error *ngIf="form.get('portNumber').errors?.required">Порт обязателен</mat-error>
+                <mat-error *ngIf="form.get('portNumber').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Логин</mat-label>
+                <input matInput placeholder="Логин" formControlName="userName" autocomplete="off" />
+
+                <mat-error *ngIf="form.get('userName').errors?.required">Логин обязателен</mat-error>
+                <mat-error *ngIf="form.get('userName').errors?.duplicateUserName">
+                    {{ validationErrors[1008] }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Пароль</mat-label>
+                <input matInput placeholder="Пароль" formControlName="password" type="password" autocomplete="off" />
+
+                <mat-error *ngIf="form.get('password').errors?.required">Пароль обязателен</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>System Type</mat-label>
+                <input matInput placeholder="System Type" formControlName="systemType" />
+
+                <mat-error *ngIf="form.get('systemType').errors?.required">System Type обязателен</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Source Address Ton</mat-label>
+                <input matInput placeholder="Source Address Ton" formControlName="sourceAddressTon" />
+
+                <mat-error *ngIf="form.get('sourceAddressTon').errors?.required">Source Address Ton обязателен
+                </mat-error>
+                <mat-error *ngIf="form.get('sourceAddressTon').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Source Address Npi</mat-label>
+                <input matInput placeholder="Source Address Npi" formControlName="sourceAddressNpi" />
+
+                <mat-error *ngIf="form.get('sourceAddressNpi').errors?.required">Source Address Npi обязателен
+                </mat-error>
+                <mat-error *ngIf="form.get('sourceAddressNpi').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-center">
+            <mat-slide-toggle labelPosition="before" class="mb-3" color="primary"
+                formControlName="sourceAddressAutodetect">
+                Source Address Autodetect
+            </mat-slide-toggle>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Dest Address Ton</mat-label>
+                <input matInput placeholder="Dest Address Ton" formControlName="destAddressTon" />
+
+                <mat-error *ngIf="form.get('destAddressTon').errors?.required">Dest Address Ton обязателен</mat-error>
+                <mat-error *ngIf="form.get('destAddressTon').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Dest Address Npi</mat-label>
+                <input matInput placeholder="Dest Address Npi" formControlName="destAddressNpi" />
+
+                <mat-error *ngIf="form.get('destAddressNpi').errors?.required">Dest Address Npi обязателен</mat-error>
+                <mat-error *ngIf="form.get('destAddressNpi').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Interface Version</mat-label>
+                <input matInput placeholder="Interface Version" formControlName="interfaceVersion" />
+
+                <mat-error *ngIf="form.get('interfaceVersion').errors?.required">Interface Version обязателен
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Delivery User Ack Request</mat-label>
+                <input matInput placeholder="Delivery User Ack Request" formControlName="deliveryUserAckRequest" />
+
+                <mat-error *ngIf="form.get('deliveryUserAckRequest').errors?.required">Delivery User Ack Request
+                    обязателен</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-center">
+            <mat-slide-toggle labelPosition="before" class="mb-3" color="primary"
+                formControlName="intermediateNotification">
+                Intermediate Notification
+            </mat-slide-toggle>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Data Encoding</mat-label>
+                <input matInput placeholder="Data Encoding" formControlName="dataEncoding" />
+
+                <mat-error *ngIf="form.get('dataEncoding').errors?.required">Data Encoding
+                    обязателен</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Validity Period</mat-label>
+                <input matInput placeholder="Validity Period" formControlName="validityPeriod" />
+
+                <mat-error *ngIf="form.get('validityPeriod').errors?.required">Validity Period обязателен</mat-error>
+                <mat-error *ngIf="form.get('validityPeriod').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Transceiver Mode</mat-label>
+                <input matInput placeholder="Transceiver Mode" formControlName="transceiverMode" />
+
+                <mat-error *ngIf="form.get('transceiverMode').errors?.required">Transceiver Mode обязателен</mat-error>
+                <mat-error *ngIf="form.get('transceiverMode').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Receive Port</mat-label>
+                <input matInput placeholder="Receive Port" formControlName="receivePort" />
+
+                <mat-error *ngIf="form.get('receivePort').errors?.required">Receive Port обязателен</mat-error>
+                <mat-error *ngIf="form.get('receivePort').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Enquire Link Interval</mat-label>
+                <input matInput placeholder="Enquire Link Interval" formControlName="enquireLinkInterval" />
+
+                <mat-error *ngIf="form.get('enquireLinkInterval').errors?.required">Enquire Link Interval обязателен
+                </mat-error>
+                <mat-error *ngIf="form.get('enquireLinkInterval').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Wait Ack Expire</mat-label>
+                <input matInput placeholder="Wait Ack Expire" formControlName="waitAckExpire" />
+
+                <mat-error *ngIf="form.get('waitAckExpire').errors?.required">Wait Ack Expire обязателен</mat-error>
+                <mat-error *ngIf="form.get('waitAckExpire').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Max Pending Submits</mat-label>
+                <input matInput placeholder="Max Pending Submits" formControlName="maxPendingSubmits" />
+
+                <mat-error *ngIf="form.get('maxPendingSubmits').errors?.required">Max Pending Submits обязателен
+                </mat-error>
+                <mat-error *ngIf="form.get('maxPendingSubmits').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Throughput</mat-label>
+                <input matInput placeholder="Throughput" formControlName="throughput" />
+
+                <mat-error *ngIf="form.get('throughput').errors?.required">Throughput обязателен</mat-error>
+                <mat-error *ngIf="form.get('throughput').errors?.pattern">Только цифры</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="pt-4">
+        <div class="row">
+            <div class="col-12 col-sm-4 col-md-4 d-flex align-items-center">
+                <mat-slide-toggle class="mb-3 mb-sm-0 narrow" color="primary" formControlName="isActive"
+                    (change)="bindActiveToDefault($event.checked)">
+                    Использовать конфигурацию
+                </mat-slide-toggle>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 d-flex align-items-center">
+                <mat-slide-toggle class="mb-3 mb-sm-0 narrow" color="primary" formControlName="isDefault"
+                    (change)="bindDefaultToActive($event.checked)" [checked]="isDefault">
+                    Использовать по умолчанию
+                </mat-slide-toggle>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 d-flex align-items-center ml-auto ml-lg-0 justify-content-end">
+                <button *ngIf="!data.id" mat-button (click)="onUndoCreate.emit(true)" [disabled]="isRequesting"
+                    class="mat-button-secondary mr-3">
+                    Отмена
+                </button>
+
+                <button mat-flat-button color="primary" [disabled]="isRequesting" type="submit">
+                    <mat-icon>save</mat-icon> Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

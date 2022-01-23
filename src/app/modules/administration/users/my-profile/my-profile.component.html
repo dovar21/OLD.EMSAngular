@@ -1,0 +1,193 @@
+<mat-card
+    class="introduction-card rounded-0 d-flex align-items-center justify-content-between"
+    *ngIf="employeeData"
+    [@fade]
+>
+    <div class="d-flex flex-column flex-md-row align-items-center m-auto m-md-0">
+        <ng-container *ngIf="employeeData?.photoPath; else genericPhoto">
+            <img
+                src="{{ employeeData.photoPathSmall }}"
+                alt="{{ employeeData.fullName }}"
+                class="introduction-card__avatar rounded-circle mr-md-4 mb-3 mb-md-0 object-cover cursor-pointer"
+                (click)="openDialogLightbox(employeeData.photoPath, employeeData.fullName)"
+            />
+        </ng-container>
+
+        <ng-template #genericPhoto>
+            <img
+                src="../../../../../../assets/img/noavatar.jpg"
+                alt="{{ employeeData.fullName }}"
+                class="introduction-card__avatar rounded-circle mr-md-4 mb-3 mb-md-0 object-cover"
+            />
+        </ng-template>
+
+        <div class="text-center text-md-left" *ngIf="employeeData">
+            <h1 class="introduction-card__name mb-1">{{ employeeData.fullName }}</h1>
+            <span class="introduction-card__position">
+                {{ employeeData.departmentName }} › {{ employeeData.positionName }}
+            </span>
+        </div>
+    </div>
+</mat-card>
+<div class="container-fluid" *ngIf="employeeData" [@fade]>
+    <div class="row">
+        <div class="col-12">
+            <mat-tab-group
+                dynamicHeight
+                animationDuration="0ms"
+                mat-stretch-tabs
+                [selectedIndex]="activeTabIndex"
+                class="global-tabgroup mb-2 mb-md-0"
+            >
+                <div class="container-fluid">
+                    <mat-tab label="Главное" matRipple matRippleColor="#533dfe">
+                        <div class="row">
+                            <div class="col-12 col-md-9 mb-4 mb-md-0">
+                                <mat-card *ngIf="!isEditingUserDetails; else updateEssentialsForm">
+                                    <mat-list role="list" class="p-0 no-mt no-mb">
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Дата рождения</span>
+                                            <span class="value text-right">{{ employeeData.dateOfBirth }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Подразделение</span>
+                                            <span class="value text-right">{{ employeeData.departmentName }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Позиция</span>
+                                            <span class="value text-right">{{ employeeData.positionName }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Дата приема на работу</span>
+                                            <span class="value text-right">{{ employeeData.hireDate }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Телефон</span>
+                                            <span class="value text-right">{{ employeeData.phone }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Email</span>
+                                            <span class="value text-right">{{ employeeData.email }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Фактический адрес</span>
+                                            <span class="value text-right">{{ employeeData.factualAddress }}</span>
+                                        </mat-list-item>
+                                        <mat-divider></mat-divider>
+
+                                        <mat-list-item role="listitem">
+                                            <span class="key mr-auto">Пол</span>
+                                            <span class="value text-right">{{ employeeData.genderName }}</span>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-card>
+
+                                <ng-template #updateEssentialsForm>
+                                    <div class="row">
+                                        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+                                            <mat-card>
+                                                <mat-card-header>
+                                                    <mat-card-title>Редактирование данных</mat-card-title>
+                                                </mat-card-header>
+                                                <mat-card-content class="mb-0">
+                                                    <form
+                                                        [formGroup]="form"
+                                                        (ngSubmit)="editUserDetails()"
+                                                        #editUserDetailsForm="ngForm"
+                                                    >
+                                                        <mat-form-field appearance="outline" class="w-100">
+                                                            <mat-label>Email</mat-label>
+                                                            <input
+                                                                matInput
+                                                                formControlName="email"
+                                                                placeholder="email@host.tj"
+                                                                type="email"
+                                                            />
+
+                                                            <mat-error *ngIf="form.get('email').errors?.required">
+                                                                Email обязателен
+                                                            </mat-error>
+
+                                                            <mat-error *ngIf="form.get('email').errors?.duplicateEmail">
+                                                                {{ validationErrors[1002] }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" class="w-100">
+                                                            <mat-label>Фактический адрес</mat-label>
+                                                            <input
+                                                                matInput
+                                                                formControlName="factualAddress"
+                                                                placeholder="г. Душанбе, ул. Лохути, д. 5, кв. 8"
+                                                                type="text"
+                                                            />
+
+                                                            <mat-error
+                                                                *ngIf="form.get('factualAddress').errors?.required"
+                                                            >
+                                                                Адрес обязателен
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </form>
+                                                </mat-card-content>
+                                                <mat-card-actions>
+                                                    <button
+                                                        mat-flat-button
+                                                        color="primary"
+                                                        (click)="editUserDetailsForm.ngSubmit.emit()"
+                                                        class="btn-lg btn-block"
+                                                        [disabled]="isRequestingEditUserDetails"
+                                                    >
+                                                        <mat-icon>save</mat-icon> Сохранить
+                                                    </button>
+                                                </mat-card-actions>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <button
+                                    (click)="isEditingUserDetails = true"
+                                    mat-button
+                                    class="w-100"
+                                    *ngIf="!isEditingUserDetails; else editUserDetailsBackButton"
+                                >
+                                    <mat-icon>edit</mat-icon> Редактировать
+                                </button>
+
+                                <ng-template #editUserDetailsBackButton>
+                                    <button (click)="isEditingUserDetails = false" mat-button class="w-100">
+                                        <mat-icon>keyboard_arrow_left</mat-icon> Назад
+                                    </button>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Сменить пароль">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-5 col-xl-4">
+                                <change-password phone="{{ employeeData.phone }}"></change-password>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Сменить телефон">
+                        Сменить телефон
+                    </mat-tab>
+                </div>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

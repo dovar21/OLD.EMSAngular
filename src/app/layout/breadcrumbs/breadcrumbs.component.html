@@ -1,0 +1,23 @@
+<nav aria-label="Хлебные крошки" class="d-print-none">
+    <ol class="breadcrumb mb-0 p-0 bg-transparent">
+        <li
+            class="breadcrumb-item d-flex align-items-center"
+            *ngFor="let breadcrumb of breadcrumbs"
+            [class.active]="breadcrumb.active"
+        >
+            <a
+                routerLink="[{{ breadcrumb.url }}]"
+                class="align-items-center d-flex"
+                *ngIf="!breadcrumb.active; else activeCrumb"
+            >
+                <mat-icon *ngIf="breadcrumb.label === 'Рабочий стол'; else textLabel">home</mat-icon>
+                <ng-template #textLabel>{{ breadcrumb.label }}</ng-template>
+            </a>
+
+            <ng-template #activeCrumb>
+                <mat-icon *ngIf="breadcrumb.label === 'Рабочий стол'; else textLabel">home</mat-icon>
+                <ng-template #textLabel>{{ breadcrumb.label }}</ng-template>
+            </ng-template>
+        </li>
+    </ol>
+</nav>

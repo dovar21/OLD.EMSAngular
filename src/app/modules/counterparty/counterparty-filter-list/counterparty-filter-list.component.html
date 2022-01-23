@@ -1,0 +1,10 @@
+<div *ngIf="selectFilterCatteries.length > 0" class="ml-2 d-flex filter-list-wrapper">
+    <span *ngFor="let selectFilterCattery of selectFilterCatteries" class="d-flex filter-list mx-2">
+        <div class="filter-item text-muted m-0" matTooltip="{{ selectFilterCattery.valueType }}" matTooltipPosition="above">
+            {{ selectFilterCattery.valueName }}
+            <mat-icon (click)="removeValue(selectFilterCattery)" class="cursor-pointer close-filter align-middle">
+                close
+            </mat-icon>
+        </div>
+    </span>
+</div>

@@ -1,0 +1,90 @@
+<div (click)="getAnalogsFromAutocomplete()">
+    <form [formGroup]="form">
+        <mat-form-field appearance="outline">
+            <input type="text"
+                   placeholder="Начните вводить название товара для добавления аналогов"
+                   matInput
+                   formControlName="analog"
+                   [matAutocomplete]="auto"/>
+            <mat-autocomplete #auto="matAutocomplete"
+                              [displayWith]="autocompleteDisplayFn"
+                              (optionSelected)="analogSelect()">
+                <mat-option *ngFor="let analog of filteredAnalogs | async" [value]="analog">
+                    <img [src]="analog.image" [alt]="analog.title" class="rounded-circle"> {{ analog.title }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>
+<mat-card class="p-0 table-responsive mb-3">
+    <perfect-scrollbar class="table-wrapper">
+        <table mat-table
+               [dataSource]="analogsList"
+               matSort
+               matSortStart="desc"
+               matSortDirection="asc"
+               matSortDisableClear
+               (matSortChange)="setSortingQueryParams($event)">
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef>Фото</th>
+                <td mat-cell *matCellDef="let analog">
+                    <img [src]="analog.image" [alt]="analog.title" class="image rounded-circle object-cover" />
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Название</th>
+                <td mat-cell *matCellDef="let analog">
+                    {{ analog.title }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="shortDescription">
+                <th mat-header-cell *matHeaderCellDef>Краткое описание</th>
+                <td mat-cell *matCellDef="let analog">
+                    {{ analog.shortDescription ? analog.shortDescription : 'Нет данных' }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="countryOfOrigin">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Страна производства</th>
+                <td mat-cell *matCellDef="let analog">
+                    {{ analog.countryOfOrigin ? analog.countryOfOrigin : 'Нет данных' }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="retailPrice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Розничная цена,сом.</th>
+                <td mat-cell *matCellDef="let analog" class="text-center">
+                    {{ analog.retailPrice }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="wholesalePrice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Оптовая цена,сом.</th>
+                <td mat-cell *matCellDef="let analog" class="text-center">
+                    {{ analog.wholesalePrice }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="untie">
+                <th mat-header-cell *matHeaderCellDef>Отвязать</th>
+                <td mat-cell *matCellDef="let analog" class="text-right">
+                    <button mat-mini-fab
+                            class="mat-fab-basic"
+                            matTooltip="Отвязать"
+                            matTooltipPosition="above"
+                            (click)="confirmModal.open(analog)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </perfect-scrollbar>
+</mat-card>
+
+<confirm-modal #confirmModal
+               confirmText="Вы действительно хотите удалить из списка аналогов?"
+               (onConfirm)="untieAnalog($event[0])">
+</confirm-modal>
+<p *ngIf="!isRequesting && !analogsList?.data.length"
+   class="text-center text-muted">
+    У этого товара еще нет аналогов
+</p>

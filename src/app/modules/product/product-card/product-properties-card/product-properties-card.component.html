@@ -1,0 +1,133 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="m-0">Свойства</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="groupForm">
+        <mat-list role="list" class="p-0 no-mt no-mb">
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Группа</span>
+                <span class="value w-100 text-right" (click)="getProductsGroups()">
+                    <input type="text"
+                           placeholder="Не задано"
+                           matInput
+                           formControlName="productGroup"
+                           [matAutocomplete]="auto"
+                           (focusout)="validationAutocomplete($event, 'productGroup')">
+                    <mat-autocomplete class="light-autocomplete"
+                                      #auto="matAutocomplete"
+                                      (optionSelected)="productPropertiesSelect($event.option.value, 'ProductGroup')">
+                        <mat-option *ngFor="let productGroup of filteredProductGroups | async" [value]="productGroup.name">
+                            {{ productGroup.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="groupForm.get('productGroup').errors?.required">Группа обязателена</mat-error>
+                    <mat-error *ngIf="groupForm.get('productGroup').errors?.objectNotFound">Группа не найдена</mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Страна производства</span>
+                <span class="value w-100 text-right" (click)="getCountries()">
+                    <input type="text"
+                           placeholder="Не задано"
+                           matInput
+                           formControlName="countryOfOrigin"
+                           [matAutocomplete]="autoCountry"
+                           (focusout)="validationAutocomplete($event, 'countryOfOrigin')">
+                    <mat-autocomplete  class="light-autocomplete"
+                                       #autoCountry="matAutocomplete"
+                                       (optionSelected)="productPropertiesSelect($event.option.value, 'Country')">
+                        <mat-option *ngFor="let countryOfOrigin of filteredCountries | async" [value]="countryOfOrigin.name">
+                            {{ countryOfOrigin.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Бренд</span>
+                <span class="value w-100 text-right" (click)="getBrands()">
+                    <input type="text"
+                           placeholder="Брэнд"
+                           matInput
+                           formControlName="brand"
+                           [matAutocomplete]="autoBrand"
+                           (focusout)="validationAutocomplete($event, 'brand')">
+                    <mat-autocomplete  class="light-autocomplete"
+                                       #autoBrand="matAutocomplete"
+                                       (optionSelected)="productPropertiesSelect($event.option.value, 'Brand')">
+                        <mat-option *ngFor="let brand of filteredBrands | async" [value]="brand.name">
+                            {{ brand.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="groupForm.get('brand').errors?.untouched">Бренд обязателен</mat-error>
+                    <mat-error *ngIf="groupForm.get('brand').errors?.objectNotFound">Бренд не найден</mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Единица измерения</span>
+                <span class="value w-100 text-right" (click)="getUnits()">
+                    <input type="text"
+                           placeholder="Не задано"
+                           matInput
+                           formControlName="unit"
+                           [matAutocomplete]="autoUnit"
+                           (focusout)="validationAutocomplete($event, 'unit')">
+                    <mat-autocomplete  class="light-autocomplete"
+                                       #autoUnit="matAutocomplete"
+                                       (optionSelected)="productPropertiesSelect($event.option.value, 'Unit')">
+                        <mat-option *ngFor="let unit of filteredUnits | async" [value]="unit.name">
+                            {{ unit.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="groupForm.get('unit').errors?.required">
+                        Единица измерения обязательна
+                    </mat-error>
+                    <mat-error *ngIf="groupForm.get('unit').errors?.objectNotFound">
+                        Единица измерения не найдена
+                    </mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Тара</span>
+                <span class="value w-100 text-right" (click)="getTareArray()">
+                    <input type="text"
+                           placeholder="Тара"
+                           matInput
+                           formControlName="tare"
+                           [matAutocomplete]="autoTare"
+                           (focusout)="validationAutocomplete($event, 'tare')">
+                    <mat-autocomplete  class="light-autocomplete"
+                                       #autoTare="matAutocomplete"
+                                       (optionSelected)="productPropertiesSelect($event.option.value, 'Tare')">
+                        <mat-option *ngFor="let tare of filteredTareArray | async" [value]="tare.name">
+                            {{ tare.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="groupForm.get('tare').errors?.required">Бренд обязателен</mat-error>
+                    <mat-error *ngIf="groupForm.get('tare').errors?.objectNotFound">Бренд не найден</mat-error>
+                </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            
+            <mat-list-item role="listitem">
+                <span class="key w-100 mr-3">Количество в таре</span>
+                <span class="value w-100 text-right">
+                    <input matInput
+                           type="number"
+                           placeholder="Не задано"
+                           formControlName="quantityPerTare"
+                           min="0"
+                           (blur)="onBlurMethod()"/>
+                <mat-error *ngIf="groupForm.get('quantityPerTare').errors?.required">Количество в таре обязателено</mat-error>
+                </span>
+            </mat-list-item>
+        </mat-list>
+    </form>
+</mat-card>
